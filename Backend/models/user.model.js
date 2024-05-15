@@ -17,15 +17,22 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['HOST', 'VENDOR', 'GUEST']
+        enum: ['HOST', 'VENDOR', 'GUEST'],
+        required: true
+    },
+    phone: String,
+    vendorName: String,
+    serviceType: String,
+    contactInfo: String,
+    rsvp: {
+        type: String,
+        enum: ['ACCEPTED', 'DECLINED', 'PENDING']
     },
     events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event'
     }]
-    },
-    { timestamps: true }
-)
+}, { timestamps: true });
 
 const eventSchema = new mongoose.Schema({
     eventName: {
@@ -44,51 +51,16 @@ const eventSchema = new mongoose.Schema({
     },
     guestList: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Guest'
+        ref: 'User'
     }],
     vendors: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vendor'
+        ref: 'User'
     }]
-},
-{ timestamps: true }
-);
+}, { timestamps: true });
 
-const guestSchema = new mongoose.Schema({
-    name:{
-        type: String,
-        required: true,
-    },
-    email: String,
-    phone: String,
-    rsvp: {
-      type: String,
-      enum: ['ACCEPTED', 'DECLINED', 'PENDING']
-    },
-    events: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Event'
-    }]
-},
-{ timestamps: true }
-);
-
-const vendorSchema = new mongoose.Schema({
-    vendorName:{
-        type: String,
-        required: true,
-    },
-    serviceType: String,
-    contactInfo: String,
-    events: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Event'
-    }]
-} ,{ timestamps: true }
-);
-const User = mongoose.model('User', userSchema);
 const Event = mongoose.model('Event', eventSchema);
-const Guest = mongoose.model('Guest', guestSchema);
-const Vendor = mongoose.model('Vendor', vendorSchema);
 
-export { User, Event, Guest, Vendor };
+const User = mongoose.model('User', userSchema);
+
+export default  User
