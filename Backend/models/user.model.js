@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    name:{
+    name: {
         type: String,
         required: true,
         unique: true
@@ -31,7 +31,11 @@ const userSchema = new mongoose.Schema({
     events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event'
-    }]
+    }],
+    uniqueId: {
+        type: String,
+        unique: true
+    }
 }, { timestamps: true });
 
 const eventSchema = new mongoose.Schema({
@@ -46,8 +50,8 @@ const eventSchema = new mongoose.Schema({
         ref: 'User'
     },
     venue: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Venue'
+        address: { type: String },
+        mapLink: { type: String }
     },
     guestList: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -59,8 +63,7 @@ const eventSchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
-const Event = mongoose.model('Event', eventSchema);
-
+export const Event = mongoose.model('Event', eventSchema);
 const User = mongoose.model('User', userSchema);
 
-export default  User
+export default User;

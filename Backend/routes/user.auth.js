@@ -1,10 +1,11 @@
 import express from 'express';
-import { resgisterHost } from '../controller/auth.controller.js';
+import { resgisterHost , signinHost } from '../controller/auth.controller.js';
 
 const router = express.Router();
 
 
 router.post("/register-host", resgisterHost);
+router.post("/signin",signinHost)
 
 
 export default router;
