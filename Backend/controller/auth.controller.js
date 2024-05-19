@@ -33,11 +33,13 @@ export const signinHost = async (req,res,next)=>{
 
         const user = await User.findOne({ email });
         if (!user) {
+            console.log('User not found');
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         const validPassword = bcryptjs.compareSync(password, user.password);
         if (!validPassword) {
+            console.log('Invalid password');
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 

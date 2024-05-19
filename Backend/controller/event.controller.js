@@ -8,7 +8,7 @@ import crypto from 'crypto';
 
 export const createEvent = async (req, res, next) => {
     try {
-        const { eventName, startDateTime, endDateTime, venue, guestList, vendors } = req.body;
+        const { eventName, startDateTime, endDateTime, venue, } = req.body;
 
         if (!eventName || !startDateTime || !endDateTime || !venue) {
             return res.status(400).json({ error: 'Incomplete event data' });
@@ -56,12 +56,13 @@ export const addGuests = async (req, res, next) => {
             const uniqueId = crypto.randomBytes(16).toString('hex');
             //generate guest password from their name
             const password = name.split(' ').join('').toLowerCase() + '123';
+            const hashedPassword = await bcryptjs.hash(password, 10);
 
             // Create a new guest and store in the database
             const newGuest = new User({
                 name,
                 email,
-                password: password,
+                password: hashedPassword,
                 phone,
                 role: 'GUEST',
                 uniqueId,
@@ -93,7 +94,7 @@ export const addGuests = async (req, res, next) => {
                 from: '"Event Manager" <priyam@gmail.com>' ,
                 to: email,
                 subject: 'RSVP for Event',
-                text: `Hello ${name},\n\nPlease RSVP for the event by clicking the link below:\n${uniqueLink}\n\nThank you!`,
+                text: `Hello ${name},\n\nPlease RSVP for the event by clicking the link below:\n${uniqueLink}\n\nThank you! username: ${email} password: ${password}`,
             };
 
             // Send the email
@@ -151,6 +152,81 @@ export const rsvpPost =  async (req, res) => {
         await guest.save();
         console.log(rsvp);
         res.send('RSVP submitted successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal server error');
+    }
+};
+
+export const giftRegister = async (req, res) => {
+    try {
+        const { name, link, eventId } = req.body;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        const newGift = {
+            name,
+            link,
+            status: 'UNBOUGHT'
+        };
+
+        event.gifts.push(newGift);
+        await event.save();
+
+        res.status(201).json({ message: 'Gift added successfully', gift: newGift });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal server error');
+    }
+};
+export const showGifts = async (req, res) => {
+    try {
+        const eventId = req.body.eventId;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        res.status(200).json({ gifts: event.gifts });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send('Internal server error');
+    }
+
+};
+
+//incomplete logic
+export const selectGift = async (req, res) => {
+    try {
+        const guestId = req.user._id;
+        const { giftId ,eventId} = req.body;
+        const event = await Event.findById(eventId);
+
+
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        const gift = event.gifts.id(giftId);
+        if (!gift) {
+            return res.status(404).json({ error: 'Gift not found' });
+        }
+
+        if (gift.status !== 'UNBOUGHT') {
+            return res.status(400).json({ error: 'Gift already selected' });
+        }
+
+        gift.status = 'BOUGHT';
+        gift.boughtBy = guestId;
+
+        await event.save();
+
+        res.status(200).json({ message: 'Gift selected successfully', gift });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal server error');

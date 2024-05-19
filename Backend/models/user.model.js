@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema({
     contactInfo: String,
     rsvp: {
         type: String,
-        enum: ['ACCEPTED', 'DECLINED', 'PENDING']
+        enum: ['ACCEPTED', 'DECLINED', 'PENDING'],
+        default: 'PENDING'
     },
     events: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -60,8 +61,22 @@ const eventSchema = new mongoose.Schema({
     vendors: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    }],
+    gifts: [{
+        name: String,
+        link: String,
+        status: {
+            type: String,
+            enum: ['UNBOUGHT', 'BOUGHT', 'DELIVERED'],
+            default: 'UNBOUGHT'
+        },
+        boughtBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
     }]
 }, { timestamps: true });
+
 
 export const Event = mongoose.model('Event', eventSchema);
 const User = mongoose.model('User', userSchema);
