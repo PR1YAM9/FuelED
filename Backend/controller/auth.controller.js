@@ -27,7 +27,7 @@ export const resgisterHost = async (req, res,next)=>{
     }
 }
 
-export const signinHost = async (req,res,next)=>{
+export const signin = async (req,res,next)=>{
     try {
         const { email, password } = req.body;
 
@@ -58,6 +58,30 @@ export const signinHost = async (req,res,next)=>{
         const {password: pass , ...rest} = user._doc; //remove password from the details
         res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
 
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+export const registerVendor = async (req,res,next)=>{
+    try {
+        const {name,email,password,} = req.body;
+        const existingUser = await User.findOne({email: email});
+        if(existingUser){
+            return res.status(500).json({
+                message: "Email already exists"
+            })
+        }
+        const hashedPassword = await bcryptjs.hash(password, 10);
+        const newUser = new User({
+            name,
+            email,
+            password: hashedPassword,
+            role: 'VENDOR' 
+        });
+        await newUser.save();
+        res.status(201).json({ message: 'Vendor registered successfully', user: newUser });
     } catch (error) {
         next(error)
     }

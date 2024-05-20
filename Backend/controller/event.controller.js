@@ -200,7 +200,6 @@ export const showGifts = async (req, res) => {
 
 };
 
-//incomplete logic
 export const selectGift = async (req, res) => {
     try {
         const guestId = req.user._id;

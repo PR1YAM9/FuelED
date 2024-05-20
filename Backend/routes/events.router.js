@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/create', verifyHost, createEvent)
 router.post('/addguests', verifyHost, addGuests)
+
 router.get('/rsvp/:uniqueId', rsvpGet)
 router.post('/rsvp/:uniqueId', rsvpPost)
 
