@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/user.auth.js'
 import eventRouter from './routes/events.router.js';
+import conversationRouter from './routes/converation.route.js';
+import messagesRouter from './routes/messages.router.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 
@@ -19,7 +21,12 @@ mongoose.connect(process.env.MONGO_URI).then(()=>{
 
 app.use('/api/user',userRouter);
 app.use('/api/auth',authRouter);
+
 app.use('/api/event',eventRouter);
+
+app.use('/api/conversations',conversationRouter)
+app.use('/api/messages',messagesRouter)
+
 
 app.listen(3000,()=>{
     console.log('App is running at 3000')

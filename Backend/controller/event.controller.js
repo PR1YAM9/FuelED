@@ -231,3 +231,129 @@ export const selectGift = async (req, res) => {
         res.status(500).send('Internal server error');
     }
 };
+
+export const addVendors = async (req, res, next) => {
+    try {
+        const { vendors, eventId } = req.body; // vendors is an array of vendor details
+
+        if (!eventId) {
+            return res.status(400).json({ error: 'Event ID is required' });
+        }
+
+        const event = await Event.findById(eventId);
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        const addedVendors = [];
+
+        for (const vendor of vendors) {
+            const { name, email, phone, vendorName, serviceType, contactInfo } = vendor;
+
+            // Generate a unique identifier for the vendor
+            const uniqueId = crypto.randomBytes(16).toString('hex');
+            // Generate vendor password from their name
+            const password = name.split(' ').join('').toLowerCase() + '123';
+            const hashedPassword = await bcryptjs.hash(password, 10);
+
+            // Create a new vendor and store in the database
+            const newVendor = new User({
+                name,
+                email,
+                password: hashedPassword,
+                phone,
+                role: 'VENDOR',
+                uniqueId,
+                vendorName,
+                serviceType,
+                contactInfo,
+                events: [eventId]
+            });
+
+            await newVendor.save();
+
+            // Add vendor to event's vendor list
+            event.vendors.push(newVendor._id);
+            addedVendors.push(newVendor);
+
+            // Send an email to the vendor with the unique RSVP link
+            const uniqueLink = `http://localhost:3000/api/event/rsvpvendor/${uniqueId}`;
+
+            // Configure the email transport using nodemailer
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.ethereal.email',
+                port: 587,
+                auth: {
+                    user: 'camryn.swift50@ethereal.email',
+                    pass: 'kpMShENbgecV9W3qPm'
+                }
+            });
+
+            // Define the email options
+            const mailOptions = {
+                from: '"Event Manager" <priyam@gmail.com>',
+                to: email,
+                subject: 'RSVP for Event',
+                text: `Hello ${name},\n\nPlease RSVP for the event by clicking the link below:\n${uniqueLink}\n\nThank you! username: ${email} password: ${password}`,
+            };
+
+            // Send the email
+            await transporter.sendMail(mailOptions);
+        }
+
+        // Save the updated event
+        await event.save();
+
+        res.status(201).json({ message: 'Vendors added and emails sent successfully', vendors: addedVendors });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export const rsvpGetVendor = async (req, res) => {
+    try {
+        const { uniqueId } = req.params;
+        const vendor = await User.findOne({ uniqueId, role: 'VENDOR' });
+
+        if (!vendor) {
+            return res.status(404).send('Vendor not found');
+        }
+
+        // Render the RSVP form (you can use a template engine or send a simple HTML form)
+        res.send(`
+            <form action="/api/event/rsvpvendor/${uniqueId}" method="POST">
+                <label for="rsvp">Will you attend?</label>
+                <select name="rsvp" id="rsvp">
+                    <option value="ACCEPTED">Yes</option>
+                    <option value="DECLINED">No</option>
+                </select>
+                <button type="submit">Submit</button>
+            </form>
+        `);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal server error');
+    }
+};
+
+export const rsvpPostVendor = async (req, res) => {
+    try {
+        const { uniqueId } = req.params;
+        const { rsvp } = req.body;
+        console.log(rsvp);
+        const vendor = await User.findOne({ uniqueId, role: 'VENDOR' });
+
+        if (!vendor) {
+            return res.status(404).send('Vendor not found');
+        }
+
+        vendor.rsvp = rsvp;
+        await vendor.save();
+        console.log(rsvp);
+        res.send('RSVP submitted successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal server error');
+    }
+};
