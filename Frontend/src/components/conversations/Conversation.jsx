@@ -12,7 +12,6 @@ const Conversation = ({ conversation, currentUser }) => {
 
     const getUser = async () => {
       try {
-        // Ensure user.events[0] exists and is valid before making the API call
         if (user && user.events && user.events.length > 0) {
           const eventId = user.events[0];
           const res = await axios.get(`/api/user/participants?eventId=${eventId}&userId=${user._id}`);
