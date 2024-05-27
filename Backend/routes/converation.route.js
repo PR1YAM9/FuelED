@@ -35,10 +35,20 @@ router.get("/:userId", async (req, res) => {
 
 router.get("/find/:firstUserId/:secondUserId", async (req, res) => {
   try {
-    const conversation = await Conversation.findOne({
+    // Check if a conversation exists between the specified users
+    let conversation = await Conversation.findOne({
       members: { $all: [req.params.firstUserId, req.params.secondUserId] },
     });
-    res.status(200).json(conversation)
+
+    // If conversation doesn't exist, create a new one
+    if (!conversation) {
+      const newConversation = new Conversation({
+        members: [req.params.firstUserId, req.params.secondUserId],
+      });
+      conversation = await newConversation.save();
+    }
+
+    res.status(200).json(conversation);
   } catch (err) {
     res.status(500).json(err);
   }

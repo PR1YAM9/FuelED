@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
     }],
     uniqueId: {
         type: String,
-        unique: true
     }
 }, { timestamps: true });
 
