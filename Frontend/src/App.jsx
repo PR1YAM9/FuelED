@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
+import "./App.css";
 import Messenger from "./pages/messanger/Messanger"; 
 import Register from "./pages/register/Register"; 
 import RSVP from "./pages/RSVP";
