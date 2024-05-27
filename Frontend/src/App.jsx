@@ -5,6 +5,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Messenger from "./pages/messanger/Messanger"; // Fixed the spelling
 import Register from "./pages/register/Register";
+import "./App.css";
 
 function App() {
   const { user } = useContext(AuthContext);
