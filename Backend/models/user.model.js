@@ -35,7 +35,10 @@ const userSchema = new mongoose.Schema({
     }],
     uniqueId: {
         type: String,
-    }
+    },
+    plusOne: String,
+    numberOfChildren: Number,
+    dietaryRestrictions: String
 }, { timestamps: true });
 
 const eventSchema = new mongoose.Schema({

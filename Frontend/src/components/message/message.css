@@ -21,12 +21,15 @@
       border-radius: 20px;
       background-color: #1877f2;
       color: white;
+      font-family: 'Imprima', sans-serif;
       max-width: 300px;
   }
   
   .messageBottom{
       font-size: 12px;
-      margin-top: 10px;
+      margin-top: -6px;
+        color: gray;
+        font-family: "Imprima", sans-serif;
   }
   
   .message.own{
@@ -34,6 +37,8 @@
   }
   
   .message.own .messageText{
-      background-color: rgb(245, 241, 241);
+      background-color: #c6d3bd;
       color: black;
+      font-family: 'Imprima', sans-serif;
+
   }

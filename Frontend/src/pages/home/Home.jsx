@@ -65,14 +65,17 @@ const Home = () => {
     },
   ];
 
-  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   console.log(user);
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (user) {
+      navigate("/dashboard");
+    } else {
+      navigate("/login");
+    }
+  }
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    navigate("/messenger");
-  };
   return (
     <>
       <Navbar bgColor={"#E09BAC"} />
@@ -87,7 +90,7 @@ const Home = () => {
               platform. Organize, coordinate, and connect with vendors
               effortlessly for an unforgettable experience.
             </div>
-            <button className="HomeButtonSP">Start Planning</button>
+            <button className="HomeButtonSP" onClick={handleClick}>Start Planning</button>
           </div>
         </div>
         <div className="homeSubSection1">

@@ -15,6 +15,7 @@
   }
   
   .chatBox {
+
     flex: 5.5;
   }
   
@@ -39,9 +40,12 @@
   }
   
   .chatMessageInput {
-    width: 80%;
-    height: 90px;
+    width: 314px;
     padding: 10px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+
   }
   
   .chatSubmitButton {
@@ -50,12 +54,17 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: teal;
+    background-color: #c6d3bd;
     color: white;
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 5px;
+    border-radius: 20px;
   }
   
   .chatOnline {
     flex: 3;
+
   }
   
   .chatMenuWrapper,

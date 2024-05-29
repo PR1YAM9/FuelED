@@ -7,6 +7,9 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
+import { Link } from "react-router-dom"; // Import Link from React Router
 
 export default function Navbar({ bgColor }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -19,14 +22,12 @@ export default function Navbar({ bgColor }) {
     setAnchorEl(null);
   };
 
-  const menuItems = ["Dashboard", "Logout"];
-  // we have to decide these menuItems based on login status=>
-  // if (logged in){
-  //   const menuItems = ["Dashboard","Logout"];
-  // }
-  //  else{
-  //   const menuItems = ["Login/Sign up"];
-  // }
+  const { user } = useContext(AuthContext);
+
+  const menuItems = user
+    ? [{ name: "Dashboard", link: "/dashboard" }, { name: "Logout", link: "/logout" }]
+    : [{ name: "Login", link: "/login" }, { name: "Register", link: "/register" }];
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -87,15 +88,17 @@ export default function Navbar({ bgColor }) {
             }}
           >
             {menuItems.map((item, index) => (
-              <MenuItem
-                key={index}
-                onClick={handleMenuClose}
-                sx={{
-                  fontFamily: "Imprima",
-                }}
-              >
-                {item}
-              </MenuItem>
+              <Link to={item.link} style={{ textDecoration: "none", color: "inherit" }}>
+                <MenuItem
+                  key={index}
+                  onClick={handleMenuClose}
+                  sx={{
+                    fontFamily: "Imprima",
+                  }}
+                >
+                 {item.name}
+                </MenuItem>
+              </Link>
             ))}
           </Menu>
         </Toolbar>

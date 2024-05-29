@@ -1,11 +1,43 @@
-.chatOnlineFriend {
+.chatOnline{
+  position: absolute;
+  top: 44px;
+  right: 0;
+}
+.chatOn{
+  border-radius: 25px;
+  color: white;
+  font-family: 'Imprima';
+  font-size: 20px;
+}
+.chatOnlineFriends{
     display: flex;
     align-items: center;
+    flex-direction: column;
     font-weight: 500;
     cursor: pointer;
     margin-top: 10px;
+    font-family: 'Imprima';
+    gap: 10px;
+  }
+  .chatOnlineFriendCard.active {
+    background-color: #c6d3bd; /* Change to your desired background color */
+}
+
+  .chatOnlineFriendCard{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Imprima';
   }
   
+  .chatOnlineHeader{
+    font-size: 20px;
+    font-weight: 500;
+    font-family: 'Imprima';
+  }
   .chatOnlineImgContainer {
     position: relative;
     margin-right: 10px;

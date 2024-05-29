@@ -6,6 +6,33 @@ import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 
 
+export const getGuestList = async (req, res, next) => {
+    try {
+        const event = await Event.findById(req.body.eventId).populate('guestList');
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        res.status(200).json({ guests: event.guestList });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export const getHostsEvent = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const events = await Event.find({ host: user._id });
+
+        res.status(200).json({ events });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
 export const createEvent = async (req, res, next) => {
     try {
         const { eventName, startDateTime, endDateTime, venue, } = req.body;
@@ -77,7 +104,7 @@ export const addGuests = async (req, res, next) => {
             addedGuests.push(newGuest);
 
             // Send an email to the guest with the unique RSVP link
-            const uniqueLink = `http://localhost:3000/api/event/rsvp/${uniqueId}`;
+            const uniqueLink = `http://localhost:5173/rsvp/${uniqueId}`;
 
             // Configure the email transport using nodemailer
             const transporter = nodemailer.createTransport({
@@ -137,26 +164,45 @@ export const rsvpGet = async (req, res) => {
     }
 };
 
-export const rsvpPost =  async (req, res) => {
+
+export const rsvpPost = async (req, res) => {
     try {
         const { uniqueId } = req.params;
-        const { rsvp } = req.body;
-        console.log(rsvp);
+        const { 
+            willAttend,
+            plusOne,
+            numberOfChildren,
+            dietaryRestrictions,
+        } = req.body;
+
+        // Find the guest by uniqueId and role
         const guest = await User.findOne({ uniqueId, role: 'GUEST' });
 
         if (!guest) {
             return res.status(404).send('Guest not found');
         }
 
-        guest.rsvp = rsvp;
+        // Update the guest object with RSVP details
+        if (willAttend==='yes') {
+            guest.rsvp = 'ACCEPTED';
+        } else {
+            guest.rsvp = 'DECLINED';
+        }
+        guest.plusOne = plusOne;
+        guest.numberOfChildren = numberOfChildren;
+        guest.dietaryRestrictions = dietaryRestrictions;
+
+        // Save the updated guest object
         await guest.save();
-        console.log(rsvp);
+
+        // Send a success response
         res.send('RSVP submitted successfully');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal server error');
     }
 };
+
 
 export const giftRegister = async (req, res) => {
     try {

@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { useState } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+
 export default function RsvpForm() {
+  const { uniqueId } = useParams();
   const [willAttendValue, setWillAttendValue] = useState("");
   const [plusOneValue, setPlusOneValue] = useState("");
   const [childrenValue, setChildrenValue] = useState("");
+
   const handleWillAttendChange = (event) => {
     setWillAttendValue(event.target.value);
   };
@@ -23,6 +26,32 @@ export default function RsvpForm() {
   const handleChildrenChange = (event) => {
     setChildrenValue(event.target.value);
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const formData = {
+        willAttend: willAttendValue,
+        bringPlusOne: plusOneValue,
+        bringChildren: childrenValue,
+      };
+
+      const response = await axios.post(`/api/event/rsvp/${uniqueId}`, formData);
+
+      if (response.status === 200) {
+        console.log("RSVP submitted successfully");
+        // Handle successful submission, e.g., show success message
+      } else {
+        console.error("Failed to submit RSVP");
+        // Handle failed submission, e.g., show error message
+      }
+    } catch (error) {
+      console.error("Error submitting RSVP:", error);
+      // Handle error, e.g., show error message
+    }
+  };
+
   return (
     <Box>
       <Typography
@@ -273,6 +302,7 @@ export default function RsvpForm() {
         </Box>
         <Button
           variant="contained"
+          onClick={handleSubmit}
           sx={{
             backgroundColor: "#C3A8E1",
             color: "black",
