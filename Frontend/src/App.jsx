@@ -13,6 +13,7 @@ import Messenger from "./pages/messanger/Messanger";
 import Register from "./pages/register/Register";
 import RSVP from "./pages/RSVP";
 import SeatingPlan from "./pages/DashboardPages/SeatingPlan";
+import CreateEvent from "./pages/createEvent/CreateEvent";
 function App() {
   const { user } = useContext(AuthContext);
 
@@ -32,6 +33,7 @@ function App() {
         />
         <Route path="/rsvp/:uniqueId" element={<RSVP />} />
         <Route path="/dashboard/seating-plan" element={<SeatingPlan />} />
+        <Route path="/createevent" element={<CreateEvent/>} />
       </Routes>
     </Router>
   );
