@@ -13,7 +13,7 @@ import Messenger from "./pages/messanger/Messanger";
 import Register from "./pages/register/Register";
 import RSVP from "./pages/RSVP";
 import SeatingPlan from "./pages/DashboardPages/SeatingPlan";
-
+import CreateEvent from "./pages/createEvent/CreateEvent";
 import Announcements from "./pages/DashboardPages/Announcements";
 import BudgetManager from "./pages/DashboardPages/BudgetManager";
 import Calender from "./pages/DashboardPages/Calender";
@@ -48,6 +48,7 @@ function App() {
         <Route path="/dashboard/GuestList" element={<GuestList />} />
         <Route path="/dashboard/VendorsList" element={<VendorsList />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/createevent" element={<CreateEvent />} />
       </Routes>
     </Router>
   );

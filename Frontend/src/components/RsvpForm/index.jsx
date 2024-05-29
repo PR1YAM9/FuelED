@@ -305,7 +305,6 @@ export default function RsvpForm() {
           onClick={handleSubmit}
           sx={{
             backgroundColor: "#C3A8E1",
-            color: "black",
             fontFamily: "Imprima",
             fontSize: { md: "25px", xs: "20px" },
             borderRadius: "30px",
