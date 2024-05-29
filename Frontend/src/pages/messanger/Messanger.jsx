@@ -6,6 +6,8 @@ import './messanger.css';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import SideBar from '../../components/SideBar';
+import Navbar from '../../components/Navbar';
 
 const Messanger = () => {
   const [conversations, setConversations] = useState([]);
@@ -97,8 +99,9 @@ const Messanger = () => {
 
   return (
     <>
+    <SideBar/>
       <div className="messenger">
-        <div className="chatMenu">
+        {/* <div className="chatMenu">
           <div className="chatMenuWrapper">
             <input type="text" placeholder='Search for vendors' className='chatMenuInput' />
             {conversations.map((c) => (
@@ -107,7 +110,7 @@ const Messanger = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         <div className="chatBox">
           <div className="chatBoxWrapper">
             {
@@ -121,12 +124,13 @@ const Messanger = () => {
                     ))}
                   </div>
                   <div className="chatBoxBottom">
-                    <textarea
+                    <input
+                      type='text'
                       placeholder='Write here'
                       onChange={(e) => setNewMessage(e.target.value)}
                       value={newMessage}
                       className='chatMessageInput'
-                    ></textarea>
+                    ></input>
                     <button className='chatSubmitButton' onClick={handleSubmit}>Send</button>
                   </div>
                 </> : <span className='noConversation'>Open a conversation to start a chat</span>

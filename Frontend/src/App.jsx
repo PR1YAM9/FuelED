@@ -30,7 +30,7 @@ function App() {
           path="/messenger"
           element={user ? <Messenger /> : <Navigate to="/login" />}
         />
-        <Route path="/rsvp" element={<RSVP />} />
+        <Route path="/rsvp/:uniqueId" element={<RSVP />} />
         <Route path="/dashboard/seating-plan" element={<SeatingPlan />} />
       </Routes>
     </Router>

@@ -15,8 +15,13 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { useState, useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 export default function SideBar() {
+  const { user } = React.useContext(AuthContext);
+  console.log(user);
+
   const [state, setState] = useState({
     left: false,
   });
@@ -121,20 +126,22 @@ export default function SideBar() {
       </Box>
       <List>
         {[
-          "Dashboard",
-          "Guest List",
-          "Vendors List",
-          "Budget Manager",
-          "Seating Place",
-          "Gift Registry",
-          "Calendar",
-          "Announcements",
-        ].map((text, index) => (
+          { text: "Dashboard", link: "/dashboard" },
+          { text: "Guest List", link: "/guest-list" },
+          { text: "Vendors List", link: "/vendors-list" },
+          { text: "Messenger", link: "/messenger" },
+          { text: "Budget Manager", link: "/budget-manager" },
+          { text: "Seating Place", link: "/dashboard/seating-plan" },
+          { text: "Gift Registry", link: "/gift-registry" },
+          { text: "Calendar", link: "/calendar" },
+          { text: "Announcements", link: "/announcements" },
+        ].map(({ text, link }, index) => (
           <React.Fragment key={text}>
             <ListItem disablePadding>
               <ListItemButton
                 selected={activeTab === text}
-                onClick={() => handleListItemClick(text)}
+                component={Link}
+                to={link}
                 sx={{
                   borderTopLeftRadius: "35px",
                   borderBottomLeftRadius: "35px",
@@ -147,6 +154,7 @@ export default function SideBar() {
                         : "rgba(255, 255, 255, 0.1)",
                   },
                 }}
+                onClick={() => handleListItemClick(text)} // Update activeTab on click
               >
                 <ListItemText
                   primary={text}
