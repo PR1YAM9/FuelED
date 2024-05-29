@@ -72,7 +72,7 @@ export default function RSVP() {
               </Typography>
               <Button
                 variant="contained"
-                onClick={handleScrollToForm} // Add onClick handler
+                onClick={handleScrollToForm}
                 sx={{
                   backgroundColor: "#C3A8E1",
                   color: "black",
