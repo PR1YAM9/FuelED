@@ -1,0 +1,174 @@
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0px 16px;
+  padding: 0px;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: 0.5em 0 0.75em;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  width: 95%;
+}
+
+table th,
+table td {
+  padding: 0.625em;
+  text-align: center;
+}
+
+table th {
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+/* Table.css */
+table {
+  width: 95%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 50%;
+  align-items: center;
+}
+
+.dropbtn {
+  background-color: #c6d3bd;
+  border-radius: 21px;
+  color: BLACK;
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+  background-color: #c6d3bd;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 100%;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+
+.dropdown-content input {
+  box-sizing: border-box;
+  font-size: 16px;
+  padding: 8px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.select-spt {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.select-spt {
+  padding: 5px 5px;
+  width: 50%;
+  background-color: #c6d3bd;
+  border-radius: 21px;
+}
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 2em;
+    font-family: "Inconsolata";
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  table td::before {
+    /*
+      * aria-label has no advantage, it won't be read inside a table
+      content: attr(aria-label);
+      */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* general styling */
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
+}
