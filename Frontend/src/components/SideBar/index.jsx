@@ -95,7 +95,7 @@ export default function SideBar() {
       </Box>
       <Box
         sx={{
-          padding: "20px 16px",
+          padding: "15px 16px",
         }}
       >
         <Typography>Select event</Typography>
@@ -127,14 +127,14 @@ export default function SideBar() {
       <List>
         {[
           { text: "Dashboard", link: "/dashboard" },
-          { text: "Guest List", link: "/guest-list" },
-          { text: "Vendors List", link: "/vendors-list" },
+          { text: "Guest List", link: "/dashboard/GuestList" },
+          { text: "Vendors List", link: "/dashboard/VendorsList" },
           { text: "Messenger", link: "/messenger" },
-          { text: "Budget Manager", link: "/budget-manager" },
-          { text: "Seating Place", link: "/dashboard/seating-plan" },
-          { text: "Gift Registry", link: "/gift-registry" },
-          { text: "Calendar", link: "/calendar" },
-          { text: "Announcements", link: "/announcements" },
+          { text: "Budget Manager", link: "/dashboard/BudgetManager" },
+          { text: "Seating Place", link: "/dashboard/SeatingPlan" },
+          { text: "Gift Registry", link: "/dashboard/GiftRegistary" },
+          { text: "Calendar", link: "/dashboard/Calender" },
+          { text: "Announcements", link: "/dashboard/announcements" },
         ].map(({ text, link }, index) => (
           <React.Fragment key={text}>
             <ListItem disablePadding>
@@ -154,14 +154,14 @@ export default function SideBar() {
                         : "rgba(255, 255, 255, 0.1)",
                   },
                 }}
-                onClick={() => handleListItemClick(text)} // Update activeTab on click
+                onClick={() => handleListItemClick(text)}
               >
                 <ListItemText
                   primary={text}
                   primaryTypographyProps={{
                     sx: {
                       fontFamily: "Inconsolata",
-                      fontSize: "20px",
+                      fontSize: "18px",
                     },
                   }}
                 />

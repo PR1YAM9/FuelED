@@ -13,6 +13,14 @@ import Messenger from "./pages/messanger/Messanger";
 import Register from "./pages/register/Register";
 import RSVP from "./pages/RSVP";
 import SeatingPlan from "./pages/DashboardPages/SeatingPlan";
+
+import Announcements from "./pages/DashboardPages/Announcements";
+import BudgetManager from "./pages/DashboardPages/BudgetManager";
+import Calender from "./pages/DashboardPages/Calender";
+import GiftRegistary from "./pages/DashboardPages/GiftRegistary";
+import GuestList from "./pages/DashboardPages/GuestList";
+import VendorsList from "./pages/DashboardPages/VendorsList";
+import Dashboard from "./pages/DashboardPages/dashboard";
 function App() {
   const { user } = useContext(AuthContext);
 
@@ -31,7 +39,15 @@ function App() {
           element={user ? <Messenger /> : <Navigate to="/login" />}
         />
         <Route path="/rsvp/:uniqueId" element={<RSVP />} />
-        <Route path="/dashboard/seating-plan" element={<SeatingPlan />} />
+        <Route path="/dashboard/SeatingPlan" element={<SeatingPlan />} />
+
+        <Route path="/dashboard/announcements" element={<Announcements />} />
+        <Route path="/dashboard/BudgetManager" element={<BudgetManager />} />
+        <Route path="/dashboard/Calender" element={<Calender />} />
+        <Route path="/dashboard/GiftRegistary" element={<GiftRegistary />} />
+        <Route path="/dashboard/GuestList" element={<GuestList />} />
+        <Route path="/dashboard/VendorsList" element={<VendorsList />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
