@@ -27,11 +27,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} /> */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route
-          path="/register"
+          path="/signup"
           element={user ? <Navigate to="/" /> : <Register />}
         />
         <Route

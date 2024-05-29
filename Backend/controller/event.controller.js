@@ -32,6 +32,22 @@ export const getHostsEvent = async (req, res, next) => {
     }
 }
 
+export const getEventDetails = async (req, res, next) => {
+    try {
+        const eventId = req.params.eventId;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            console.log(`Event not found for ID: ${eventId}`);
+            return res.status(404).json({ error: 'Event not found' });
+        }
+        res.status(200).json({ event });
+    } catch (error) {
+        console.error(`Error fetching event details: ${error.message}`);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 
 export const createEvent = async (req, res, next) => {
     try {
