@@ -8,42 +8,43 @@ import SideBar from "../../components/SideBar";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useNavigate } from "react-router-dom";
 
 const CreateEvent = () => {
     const navigate = useNavigate();
-  const [eventName, setEventName] = useState("");
-  const [startDateTime, setStartDateTime] = useState(null);
-  const [endDateTime, setEndDateTime] = useState(null);
-  const [venueAddress, setVenueAddress] = useState("");
-  const [venueMapLink, setVenueMapLink] = useState("");
+    const [eventName, setEventName] = useState("");
+    const [startDateTime, setStartDateTime] = useState(null);
+    const [endDateTime, setEndDateTime] = useState(null);
+    const [venueAddress, setVenueAddress] = useState("");
+    const [venueMapLink, setVenueMapLink] = useState("");
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-    try {
-      const formData = {
-        eventName,
-        startDateTime,
-        endDateTime,
-        venue: {
-          address: venueAddress,
-          mapLink: venueMapLink,
-        },
-      };
+        try {
+        const formData = {
+            eventName,
+            startDateTime,
+            endDateTime,
+            venue: {
+            address: venueAddress,
+            mapLink: venueMapLink,
+            },
+        };
 
-      const response = await axios.post(`/api/event/create`, formData);
+        const response = await axios.post(`/api/event/create`, formData);
 
-      if (response.status === 200) {
-        console.log("Event created successfully");
-        navigate("/dashboard");
-      } else {
-        console.error("Failed to create event");
-      }
-    } catch (error) {
-      console.error("Error creating event:", error);
-    }
-  };
+        if (response.status === 200) {
+            console.log("Event created successfully");
+            navigate("/dashboard");
+        } else {
+            console.error("Failed to create event");
+        }
+        } catch (error) {
+        console.error("Error creating event:", error);
+        }
+    };
 
   return (
     <>

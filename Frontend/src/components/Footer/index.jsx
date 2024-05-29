@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Footer({ bgColor }) {
+
+  const {user} = useContext(AuthContext);
+ 
+  const handleClick = () => {
+    if (user) {
+      navigate("/dashboard");
+    } else {
+      navigate("/login");
+    }
+  }
   return (
     <Box
       sx={{

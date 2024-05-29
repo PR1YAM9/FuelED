@@ -1,10 +1,11 @@
 import express from 'express';
 import { verifyGuest, verifyHost } from '../utils/verifyUser.js';
-import { createEvent, addGuests, rsvpGet, rsvpPost, giftRegister, showGifts, selectGift, addVendors, rsvpGetVendor, rsvpPostVendor, getGuestList, getHostsEvent } from '../controller/event.controller.js';
+import { createEvent, addGuests, rsvpGet, rsvpPost, giftRegister, showGifts, selectGift, addVendors, rsvpGetVendor, rsvpPostVendor, getGuestList, getHostsEvent, getEventDetails } from '../controller/event.controller.js';
 
 const router = express.Router();
 router.get('/guestList', verifyHost , getGuestList)
-router.get('/getevent', verifyHost, getHostsEvent)
+router.get('/getevents', verifyHost, getHostsEvent)
+router.get('/geteventdetails/:eventId', getEventDetails)
 
 router.post('/create', verifyHost, createEvent)
 router.post('/addguests', verifyHost, addGuests)
