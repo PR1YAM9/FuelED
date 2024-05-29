@@ -86,3 +86,14 @@ export const registerVendor = async (req,res,next)=>{
         next(error)
     }
 }
+
+export const getUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+        res.status(200).json({user});
+    }
+    catch (error) {
+        errorHandler(error, res);
+    }
+}

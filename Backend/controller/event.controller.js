@@ -222,7 +222,8 @@ export const rsvpPost = async (req, res) => {
 
 export const giftRegister = async (req, res) => {
     try {
-        const { name, link, eventId } = req.body;
+        const eventId = req.params.eventId;
+        const { name, link } = req.body;
         const event = await Event.findById(eventId);
 
         if (!event) {
@@ -246,7 +247,7 @@ export const giftRegister = async (req, res) => {
 };
 export const showGifts = async (req, res) => {
     try {
-        const eventId = req.body.eventId;
+        const eventId = req.params.eventId;
         const event = await Event.findById(eventId);
 
         if (!event) {

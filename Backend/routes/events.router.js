@@ -17,8 +17,8 @@ router.post('/addvendors', verifyHost, addVendors)
 router.get('/rsvpvendor/:uniqueId', rsvpGetVendor)
 router.post('/rsvpvendor/:uniqueId', rsvpPostVendor)
 
-router.post('/giftregister', verifyHost, giftRegister)
-router.get('/showgifts', verifyGuest, showGifts);
+router.post('/giftregister/:eventId', verifyHost, giftRegister)
+router.get('/showgifts/:eventId', showGifts);
 router.post('/selectgift', verifyGuest, selectGift);
 
 export default router;
