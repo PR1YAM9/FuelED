@@ -40,7 +40,7 @@ const AddGifts = () => {
     };
 
     try {
-      const response = await axios.post(`/api/event/giftregister/${eventId}`, giftData);
+      const response = await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/giftregister/${eventId}`, giftData);
       console.log('Gift registered successfully:', response.data);
       // Reset the form fields after successful submission
       setGiftName('');

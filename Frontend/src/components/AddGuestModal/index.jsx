@@ -52,7 +52,7 @@ export default function AddGuestModal({ open, handleClose, formData, setFormData
       const guests = [guestData];
 
       const response = await axios.post(
-        `/api/event/addguests/${user.events[0]}`,
+        `https://fuel-ed-noyz.vercel.app/api/event/addguests/${user.events[0]}`,
         { guests }
       );
 

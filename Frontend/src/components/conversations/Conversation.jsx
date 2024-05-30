@@ -14,7 +14,7 @@ const Conversation = ({ conversation, currentUser }) => {
       try {
         if (user && user.events && user.events.length > 0) {
           const eventId = user.events[0];
-          const res = await axios.get(`/api/user/participants?eventId=${eventId}&userId=${user._id}`);
+          const res = await axios.get(`https://fuel-ed-noyz.vercel.app/api/user/participants?eventId=${eventId}&userId=${user._id}`);
           
           if (user.role === 'HOST') {
             const vendorId = conversation.members.find((m) => m !== currentUser._id);

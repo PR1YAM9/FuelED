@@ -23,7 +23,7 @@ export default function GuestList() {
   useEffect(() => {
     const fetchGuestList = async () => {
       try {
-        const response = await axios.get("/api/event/guestList/66473f2db3c877acac6f5494");
+        const response = await axios.get("https://fuel-ed-noyz.vercel.app/api/event/guestList/66473f2db3c877acac6f5494");
         setGuests(response.data.guests);
       } catch (error) {
         console.error("Error fetching guest list:", error);

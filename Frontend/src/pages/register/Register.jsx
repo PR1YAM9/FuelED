@@ -18,7 +18,7 @@ const Register = () => {
       password: password.current.value
     }
     try {
-      const res = await axios.post("/api/auth/register-host", user)
+      const res = await axios.post("https://fuel-ed-noyz.vercel.app/api/auth/register-host", user)
       navigate('/login')
     } catch (error) {
       console.log(error);

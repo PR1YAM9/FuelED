@@ -51,7 +51,7 @@ const AddVendorModal = ({ open, handleClose, formData, setFormData }) => {
       };
 
       const response = await axios.post(
-        `/api/event/addvendors/${user.events[0]}`,
+        `https://fuel-ed-noyz.vercel.app/api/event/addvendors/${user.events[0]}`,
         { vendors: [vendorData] }
       );
 

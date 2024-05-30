@@ -33,7 +33,7 @@ const CreateEvent = () => {
             },
         };
 
-        const response = await axios.post(`/api/event/create`, formData);
+        const response = await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/create`, formData);
 
         if (response.status === 200) {
             console.log("Event created successfully");

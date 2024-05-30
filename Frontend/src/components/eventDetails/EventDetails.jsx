@@ -14,7 +14,7 @@ const EventDetails = () => {
     const fetchEventDetails = async () => {
       try {
         const res = await axios.get(
-          `/api/event/geteventdetails/${user.events[1]}`
+          `https://fuel-ed-noyz.vercel.app/api/event/geteventdetails/${user.events[1]}`
         );
         setEventDetails(res.data.event);
       } catch (error) {

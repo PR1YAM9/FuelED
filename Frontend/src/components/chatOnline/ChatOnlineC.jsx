@@ -14,7 +14,7 @@ const ChatOnlineC = ({ setCurrentChat }) => {
         const fetchUsers = async () => {
             try {
                 const res = await axios.get(
-                    `/api/user/participants?eventId=${eventId}&userId=${user._id}`
+                    `https://fuel-ed-noyz.vercel.app/api/user/participants?eventId=${eventId}&userId=${user._id}`
                 );
                 // Check if the response data is an array
                 if (Array.isArray(res.data)) {
@@ -33,7 +33,7 @@ const ChatOnlineC = ({ setCurrentChat }) => {
     const handleUserSelect = async (userId) => {
         setSelectedUser(userId);
         try {
-            const res = await axios.get(`/api/conversations/find/${user._id}/${userId}`);
+            const res = await axios.get(`https://fuel-ed-noyz.vercel.app/api/conversations/find/${user._id}/${userId}`);
             setCurrentChat(res.data);
         } catch (error) {
             console.log('Error starting conversation:', error);
