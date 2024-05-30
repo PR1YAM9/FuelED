@@ -8,7 +8,7 @@ import crypto from 'crypto';
 
 export const getGuestList = async (req, res, next) => {
     try {
-        const event = await Event.findById(req.body.eventId).populate('guestList');
+        const event = await Event.findById(req.params.eventId).populate('guestList');
         if (!event) {
             return res.status(404).json({ error: 'Event not found' });
         }
@@ -77,81 +77,76 @@ export const createEvent = async (req, res, next) => {
 }
 
 export const addGuests = async (req, res, next) => {
+  try {
+    const eventId = req.params.eventId;
+    const { guests } = req.body;
 
-    try {
-        const { guests, eventId } = req.body; // guests is an array of guest details
-        
-        if (!eventId) {
-            return res.status(400).json({ error: 'Event ID is required' });
-        }
-
-        const event = await Event.findById(eventId);
-        if (!event) {
-            return res.status(404).json({ error: 'Event not found' });
-        }
-
-        const addedGuests = [];
-
-        for (const guest of guests) {
-            const { name, email, phone } = guest;
-
-            // Generate a unique identifier for the guest
-            const uniqueId = crypto.randomBytes(16).toString('hex');
-            //generate guest password from their name
-            const password = name.split(' ').join('').toLowerCase() + '123';
-            const hashedPassword = await bcryptjs.hash(password, 10);
-
-            // Create a new guest and store in the database
-            const newGuest = new User({
-                name,
-                email,
-                password: hashedPassword,
-                phone,
-                role: 'GUEST',
-                uniqueId,
-                rsvp: 'PENDING', // Default RSVP status
-                events: [eventId]
-            });
-
-            await newGuest.save();
-
-            // Add guest to event's guest list
-            event.guestList.push(newGuest._id);
-            addedGuests.push(newGuest);
-
-            // Send an email to the guest with the unique RSVP link
-            const uniqueLink = `http://localhost:5173/rsvp/${uniqueId}`;
-
-            // Configure the email transport using nodemailer
-            const transporter = nodemailer.createTransport({
-                host: 'smtp.ethereal.email',
-                port: 587,
-                auth: {
-                    user: 'camryn.swift50@ethereal.email',
-                    pass: 'kpMShENbgecV9W3qPm'
-                }            
-            });
-
-            // Define the email options
-            const mailOptions = {
-                from: '"Event Manager" <priyam@gmail.com>' ,
-                to: email,
-                subject: 'RSVP for Event',
-                text: `Hello ${name},\n\nPlease RSVP for the event by clicking the link below:\n${uniqueLink}\n\nThank you! username: ${email} password: ${password}`,
-            };
-
-            // Send the email
-            await transporter.sendMail(mailOptions);
-        }
-
-        // Save the updated event
-        await event.save();
-
-        res.status(201).json({ message: 'Guests added and emails sent successfully', guests: addedGuests });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+    if (!eventId) {
+      return res.status(400).json({ error: 'Event ID is required' });
     }
+
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+
+    const addedGuests = [];
+
+    for (const guest of guests) {
+      const { name, email, phone } = guest;
+
+      if (!email) {
+        return res.status(400).json({ error: 'Email is required for all guests' });
+      }
+
+      const uniqueId = crypto.randomBytes(16).toString('hex');
+      const password = name.split(' ').join('').toLowerCase() + '123';
+      const hashedPassword = await bcryptjs.hash(password, 10);
+
+      const newGuest = new User({
+        name,
+        email,
+        password: hashedPassword,
+        phone,
+        role: 'GUEST',
+        uniqueId,
+        rsvp: 'PENDING',
+        events: [eventId]
+      });
+
+      await newGuest.save();
+
+      event.guestList.push(newGuest._id);
+      addedGuests.push(newGuest);
+
+      const uniqueLink = `http://localhost:5173/rsvp/${uniqueId}`;
+
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        auth: {
+          user: 'camryn.swift50@ethereal.email',
+          pass: 'kpMShENbgecV9W3qPm'
+        }
+      });
+
+      const mailOptions = {
+        from: '"Event Manager" <priyam@gmail.com>',
+        to: email,
+        subject: 'RSVP for Event',
+        text: `Hello ${name},\n\nPlease RSVP for the event by clicking the link below:\n${uniqueLink}\n\nThank you! username: ${email} password: ${password}`,
+      };
+
+      await transporter.sendMail(mailOptions);
+    }
+
+    await event.save();
+
+    res.status(201).json({ message: 'Guests added and emails sent successfully', guests: addedGuests });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 }
 
 export const rsvpGet = async (req, res) => {
@@ -297,7 +292,16 @@ export const selectGift = async (req, res) => {
 
 export const addVendors = async (req, res, next) => {
     try {
-        const { vendors, eventId } = req.body; // vendors is an array of vendor details
+        console.log(req.body); // Log the entire request body
+        const eventId = req.params.eventId;
+        const vendors = req.body.vendors; // Check the structure of req.body
+
+        // Check if vendors is an array
+        if (!Array.isArray(vendors)) {
+            return res.status(400).json({ error: 'Vendors should be an array' });
+        }
+
+        console.log(vendors); // Log the value of req.body.vendors
 
         if (!eventId) {
             return res.status(400).json({ error: 'Event ID is required' });
@@ -311,7 +315,7 @@ export const addVendors = async (req, res, next) => {
         const addedVendors = [];
 
         for (const vendor of vendors) {
-            const { name, email, phone, vendorName, serviceType, contactInfo } = vendor;
+            const { name, email, phone, vendorName, serviceType, companyName } = vendor;
 
             // Generate a unique identifier for the vendor
             const uniqueId = crypto.randomBytes(16).toString('hex');
@@ -329,7 +333,7 @@ export const addVendors = async (req, res, next) => {
                 uniqueId,
                 vendorName,
                 serviceType,
-                contactInfo,
+                companyName,
                 events: [eventId]
             });
 
@@ -340,7 +344,7 @@ export const addVendors = async (req, res, next) => {
             addedVendors.push(newVendor);
 
             // Send an email to the vendor with the unique RSVP link
-            const uniqueLink = `http://localhost:3000/api/event/rsvpvendor/${uniqueId}`;
+            const uniqueLink = `http://localhost:5173/rsvp/${uniqueId}`;
 
             // Configure the email transport using nodemailer
             const transporter = nodemailer.createTransport({
@@ -370,7 +374,7 @@ export const addVendors = async (req, res, next) => {
         res.status(201).json({ message: 'Vendors added and emails sent successfully', vendors: addedVendors });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: error });
     }
 }
 
@@ -403,17 +407,24 @@ export const rsvpGetVendor = async (req, res) => {
 export const rsvpPostVendor = async (req, res) => {
     try {
         const { uniqueId } = req.params;
-        const { rsvp } = req.body;
-        console.log(rsvp);
+        const { name, email, phone, vendorName, serviceType, companyName } = req.body;
+
         const vendor = await User.findOne({ uniqueId, role: 'VENDOR' });
 
         if (!vendor) {
             return res.status(404).send('Vendor not found');
         }
 
-        vendor.rsvp = rsvp;
+        // Update vendor details with RSVP
+        vendor.name = name;
+        vendor.email = email;
+        vendor.phone = phone;
+        vendor.vendorName = vendorName;
+        vendor.serviceType = serviceType;
+        vendor.companyName = companyName;
+
         await vendor.save();
-        console.log(rsvp);
+
         res.send('RSVP submitted successfully');
     } catch (error) {
         console.error(error);

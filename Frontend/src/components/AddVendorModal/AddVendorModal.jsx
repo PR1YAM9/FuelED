@@ -4,12 +4,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import { Checkbox } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -29,7 +28,7 @@ const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-export default function AddGuestModal({ open, handleClose, formData, setFormData }) {
+const AddVendorModal = ({ open, handleClose, formData, setFormData }) => {
   const { user } = React.useContext(AuthContext);
 
   const handleChange = (e) => {
@@ -43,26 +42,27 @@ export default function AddGuestModal({ open, handleClose, formData, setFormData
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const guestData = {
+      const vendorData = {
         name: formData.name,
         email: formData.email,
-        phone: formData.contact,
+        phone: formData.phone,
+        serviceType: formData.serviceType,
+        companyName: formData.companyName,
       };
 
-      const guests = [guestData];
-
       const response = await axios.post(
-        `/api/event/addguests/${user.events[0]}`,
-        { guests }
+        `/api/event/addvendors/${user.events[0]}`,
+        { vendors: [vendorData] }
       );
 
       console.log(response.data);
       handleClose();
     } catch (error) {
-      console.error("Error adding guests:", error);
+      console.error("Error adding vendor:", error);
     }
   };
 
+  console.log(formData );
   return (
     <div>
       <Modal
@@ -73,7 +73,7 @@ export default function AddGuestModal({ open, handleClose, formData, setFormData
       >
         <Box sx={style} component="form" onSubmit={handleSubmit}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add Guest
+            Onboard Vendor
           </Typography>
           <TextField
             margin="normal"
@@ -85,30 +85,6 @@ export default function AddGuestModal({ open, handleClose, formData, setFormData
             value={formData.name}
             onChange={handleChange}
             autoFocus
-            InputProps={{
-              sx: {
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#C3A8E1",
-                },
-              },
-            }}
-            InputLabelProps={{
-              sx: {
-                "&.Mui-focused": {
-                  color: "#C3A8E1",
-                },
-              },
-            }}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="contact"
-            label="Contact Number"
-            name="contact"
-            value={formData.contact}
-            onChange={handleChange}
             InputProps={{
               sx: {
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
@@ -148,15 +124,77 @@ export default function AddGuestModal({ open, handleClose, formData, setFormData
               },
             }}
           />
-          <FormControlLabel
-            control={
-              <CustomCheckbox
-                checked={formData.plusOne}
-                onChange={handleChange}
-                name="plusOne"
-              />
-            }
-            label="+1"
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="phone"
+            label="Phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            InputProps={{
+              sx: {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#C3A8E1",
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: "#C3A8E1",
+                },
+              },
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="serviceType"
+            label="Service Type"
+            name="serviceType"
+            value={formData.serviceType}
+            onChange={handleChange}
+            InputProps={{
+              sx: {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#C3A8E1",
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: "#C3A8E1",
+                },
+              },
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="companyName"
+            label="Company Name"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
+            InputProps={{
+              sx: {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#C3A8E1",
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: "#C3A8E1",
+                },
+              },
+            }}
           />
           <Box
             sx={{
@@ -179,7 +217,7 @@ export default function AddGuestModal({ open, handleClose, formData, setFormData
                 color: "white",
               }}
             >
-              Add Guest
+              Add Vendor
             </Button>
             <Button
               onClick={handleClose}
@@ -204,3 +242,5 @@ export default function AddGuestModal({ open, handleClose, formData, setFormData
     </div>
   );
 }
+
+export default AddVendorModal;

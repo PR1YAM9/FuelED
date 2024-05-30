@@ -38,7 +38,10 @@ const userSchema = new mongoose.Schema({
     },
     plusOne: String,
     numberOfChildren: Number,
-    dietaryRestrictions: String
+    dietaryRestrictions: String,
+    allergies: String,
+    companyName: String,
+    serviceType: String,
 }, { timestamps: true });
 
 const eventSchema = new mongoose.Schema({

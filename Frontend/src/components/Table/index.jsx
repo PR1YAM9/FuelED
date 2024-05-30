@@ -8,8 +8,8 @@ export default function Table({ columns, data }) {
         return "sno";
       case "name":
         return "name";
-      case "contact":
-        return "contact";
+      case "phone":
+        return "phone";
       case "email":
         return "email";
       case "+1":
