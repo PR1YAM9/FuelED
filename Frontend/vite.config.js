@@ -7,8 +7,6 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'https://fuel-ed-noyz.vercel.app/',
-        changeOrigin: true,
-        secure: false,
       },
     },
   },
