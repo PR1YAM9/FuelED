@@ -4,6 +4,7 @@ table {
   margin: 0px 16px;
   padding: 0px;
   table-layout: fixed;
+  font-family: "Inconsolata";
 }
 
 table caption {
@@ -168,7 +169,7 @@ th {
 }
 
 /* general styling */
-body {
+/* body {
   font-family: "Open Sans", sans-serif;
   line-height: 1.25;
-}
+} */
