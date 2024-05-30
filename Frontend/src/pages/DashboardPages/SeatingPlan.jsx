@@ -62,20 +62,21 @@ export default function SeatingPlan() {
       <SideBar />
       <Box
         sx={{
-          padding: "10px 20px",
+          padding: "0px 20px",
         }}
       >
         <Typography
           variant="h4"
           sx={{
-            color: "black",
+            mt: 2,
+            mb: 2,
+            color: "#E09BAC",
             display: "flex",
             justifyContent: "center",
             fontFamily: "Inconsolata",
-            pb: 3,
           }}
         >
-          Seating Plan
+          Seating Pan
         </Typography>
         <Box
           sx={{

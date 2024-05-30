@@ -1,52 +1,42 @@
 import React from "react";
-import "./Table.css";
-export default function Table() {
-  const columns = ["Account", "Due Date", "Amount", "Period"];
+import "./TableIndex.css";
 
-  const data = [
-    {
-      account: "Visa - 3412",
-      duedate: "04/01/2016",
-      amount: "$1,190",
-      period: "03/01/2016 - 03/31/2016",
-    },
-    {
-      account: "Visa - 6076",
-      duedate: "03/01/2016",
-      amount: "$2,443",
-      period: "02/01/2016 - 02/29/2016",
-    },
-    {
-      account: "Corporate AMEX",
-      duedate: "03/01/2016",
-      amount: "$1,181",
-      period: "02/01/2016 - 02/29/2016",
-    },
-    {
-      account: "Visa - 3412",
-      duedate: "02/01/2016",
-      amount: "$842",
-      period: "01/01/2016 - 01/31/2016",
-    },
-  ];
+export default function Table({ columns, data }) {
+  const getKeyFromColumn = (column) => {
+    switch (column.toLowerCase()) {
+      case "s.no":
+        return "sno";
+      case "name":
+        return "name";
+      case "contact":
+        return "contact";
+      case "email":
+        return "email";
+      case "+1":
+        return "+1";
+
+      default:
+        return column.toLowerCase().replace(/ /g, "");
+    }
+  };
+
   return (
-    <table>
-      <caption>Statement Summary</caption>
-      <thead>
-        <tr>
+    <table className="custom-table">
+      <thead className="custom-thead">
+        <tr className="custom-tr">
           {columns.map((column, index) => (
-            <th key={index} scope="col">
+            <th key={index} scope="col" className="custom-th">
               {column}
             </th>
           ))}
         </tr>
       </thead>
-      <tbody>
+      <tbody className="custom-tbody">
         {data.map((row, rowIndex) => (
-          <tr key={rowIndex}>
+          <tr key={rowIndex} className="custom-tr">
             {columns.map((column, colIndex) => (
-              <td key={colIndex} data-label={column}>
-                {row[column.toLowerCase().replace(/ /g, "")]}
+              <td key={colIndex} data-label={column} className="custom-td">
+                {row[getKeyFromColumn(column)]}
               </td>
             ))}
           </tr>

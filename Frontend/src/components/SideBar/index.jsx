@@ -98,7 +98,26 @@ export default function SideBar() {
           padding: "15px 16px",
         }}
       >
-        <Typography>Select event</Typography>
+        <Button
+          variant="outlined"
+          sx={{
+            color: "white",
+            border: "1px solid white",
+            fontFamily: "Inconsolata",
+            fontSize: { md: "20px", xs: "15px" },
+            borderRadius: "30px",
+            padding: "5px 30px",
+            "&:hover": { backgroundColor: "#C3A8E1" },
+            mb: { md: "30px", xs: "15px" },
+            "&.Mui-disabled": {
+              background: "#C6D3BD",
+              color: "white",
+            },
+          }}
+        >
+          Create Event
+        </Button>
+        {/* <Typography>Select event</Typography>
         <FormControl sx={{ m: 1, minWidth: 120, borderRadius: "40px" }}>
           <Select
             value={event}
@@ -122,7 +141,7 @@ export default function SideBar() {
             <MenuItem value={20}>Twenty</MenuItem>
             <MenuItem value={30}>Thirty</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
       </Box>
       <List>
         {[
