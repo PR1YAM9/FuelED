@@ -1,30 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideBar from "../../components/SideBar";
 import Box from "@mui/material/Box";
 import { Typography, Button } from "@mui/material";
 import Table from "../../components/Table";
 import AddGuestModal from "../../components/AddGuestModal";
+import axios from "axios";
 
 export default function GuestList() {
+  const [guests, setGuests] = useState([]);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [guestList, setGuestList] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     contact: "",
     email: "",
     plusOne: false,
   });
-  const columns = ["S.no", "Name", "Contact", "Email", "+1"];
-  const data = [
-    {
-      sno: 1,
-      name: "John Doe",
-      contact: "+91 12345 54321",
-      email: "john.doe@example.com",
-      "+1": "Yes",
-    },
-  ];
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    const fetchGuestList = async () => {
+      try {
+        const response = await axios.get("/api/event/guestList/66473f2db3c877acac6f5494");
+        setGuests(response.data.guests);
+      } catch (error) {
+        console.error("Error fetching guest list:", error);
+      }
+    };
+  
+    fetchGuestList();
+  }, []);// Empty dependency array to fetch data only once on component mount
+
+    console.log(guestList);
+  const columns = [ "Name", "phone", "Email", "+1"];
 
   return (
     <div>
@@ -52,7 +62,6 @@ export default function GuestList() {
           onClick={handleOpen}
           sx={{
             backgroundColor: "#C3A8E1",
-            color: "black",
             fontFamily: "Imprima",
             fontSize: { md: "20px", xs: "15px" },
             borderRadius: "30px",
@@ -64,7 +73,8 @@ export default function GuestList() {
         >
           Add Guest
         </Button>
-        <Table columns={columns} data={data} />
+        
+<Table columns={columns} data={guests} />
         <AddGuestModal
           open={open}
           handleClose={handleClose}
@@ -76,7 +86,6 @@ export default function GuestList() {
           onClick={handleOpen}
           sx={{
             backgroundColor: "#C3A8E1",
-            color: "black",
             fontFamily: "Imprima",
             fontSize: { md: "20px", xs: "15px" },
             borderRadius: "30px",
