@@ -89,34 +89,36 @@ export default function Announcements() {
                     </div>
                   ))}
                 </div>
-                <div className="chatBoxBottom">
-                  <TextField
-                    type="text"
-                    placeholder="Write an announcement"
-                    onChange={(e) => setNewAnnouncement(e.target.value)}
-                    value={newAnnouncement}
-                    fullWidth
-                    multiline
-                    rows={4}
-                    sx={{ mb: 2 , width: "278px" , fontFamily: "Imprima" ,padding: "10px", borderRadius: "20px", backgroundColor: "#f7e3e382", border: "0.5px solid white" , outline: "none"}}
-                  />
-                  <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                    sx={{
-                      backgroundColor: "#C3A8E1",
-                      fontFamily: "Imprima",
-                      fontSize: { md: "20px", xs: "15px" },
-                      borderRadius: "30px",
-                      padding: "10px",
-                      "&:hover": { backgroundColor: "#C3A8E1" },
-                      color: "white",
-                      width: "90px",
-                    }}
-                  >
-                    Post
-                  </Button>
-                </div>
+                {user.role === "HOST" && (
+                  <div className="chatBoxBottom">
+                    <TextField
+                      type="text"
+                      placeholder="Write an announcement"
+                      onChange={(e) => setNewAnnouncement(e.target.value)}
+                      value={newAnnouncement}
+                      fullWidth
+                      multiline
+                      rows={4}
+                      sx={{ mb: 2 , width: "278px" , fontFamily: "Imprima" ,padding: "10px", borderRadius: "20px", backgroundColor: "#f7e3e382", border: "0.5px solid white" , outline: "none"}}
+                    />
+                    <Button
+                      variant="contained"
+                      onClick={handleSubmit}
+                      sx={{
+                        backgroundColor: "#C3A8E1",
+                        fontFamily: "Imprima",
+                        fontSize: { md: "20px", xs: "15px" },
+                        borderRadius: "30px",
+                        padding: "10px",
+                        "&:hover": { backgroundColor: "#C3A8E1" },
+                        color: "white",
+                        width: "90px",
+                      }}
+                    >
+                      Post
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
           </div>

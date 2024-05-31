@@ -74,6 +74,20 @@ export default function SideBar() {
     setActiveTab(text);
   };
 
+  const listItems = [
+    { text: "Dashboard", link: "/dashboard", roles: ["HOST", "GUEST", "VENDOR"] },
+    { text: "Guest List", link: "/dashboard/GuestList", roles: ["HOST"] },
+    { text: "Vendors List", link: "/dashboard/VendorsList", roles: ["HOST"] },
+    { text: "Messenger", link: "/messenger", roles: ["HOST", "VENDOR"] },
+    { text: "Budget Manager", link: "/dashboard/BudgetManager", roles: ["HOST"] },
+    { text: "Seating Place", link: "/dashboard/SeatingPlan", roles: ["HOST"] },
+    { text: "Gift Registry", link: "/dashboard/GiftRegistary", roles: ["HOST", "GUEST"] },
+    { text: "Calendar", link: "/dashboard/Calender", roles: ["HOST"] },
+    { text: "Announcements", link: "/dashboard/announcements", roles: ["HOST", "GUEST"] },
+  ];
+
+  const filteredListItems = listItems.filter(item => item.roles.includes(user.role));
+
   const list = (anchor) => (
     <Box
       sx={{
@@ -145,17 +159,7 @@ export default function SideBar() {
         </Button>
       </Box>
       <List>
-        {[
-          { text: "Dashboard", link: "/dashboard" },
-          { text: "Guest List", link: "/dashboard/GuestList" },
-          { text: "Vendors List", link: "/dashboard/VendorsList" },
-          { text: "Messenger", link: "/messenger" },
-          { text: "Budget Manager", link: "/dashboard/BudgetManager" },
-          { text: "Seating Place", link: "/dashboard/SeatingPlan" },
-          { text: "Gift Registry", link: "/dashboard/GiftRegistary" },
-          { text: "Calendar", link: "/dashboard/Calender" },
-          { text: "Announcements", link: "/dashboard/announcements" },
-        ].map(({ text, link }, index) => (
+        {filteredListItems.map(({ text, link }, index) => (
           <React.Fragment key={text}>
             <ListItem disablePadding>
               <ListItemButton
