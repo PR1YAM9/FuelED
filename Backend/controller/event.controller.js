@@ -77,77 +77,76 @@ export const createEvent = async (req, res, next) => {
 }
 
 export const addGuests = async (req, res, next) => {
-  try {
-    const eventId = req.params.eventId;
-    const { guests } = req.body;
-
-    if (!eventId) {
-      return res.status(400).json({ error: 'Event ID is required' });
-    }
-
-    const event = await Event.findById(eventId);
-    if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
-    }
-
-    const addedGuests = [];
-
-    for (const guest of guests) {
-      const { name, email, phone } = guest;
-
-      if (!email) {
-        return res.status(400).json({ error: 'Email is required for all guests' });
+    try {
+      const eventId = req.params.eventId;
+      const { guests } = req.body;
+  
+      if (!eventId) {
+        return res.status(400).json({ error: 'Event ID is required' });
       }
-
-      const uniqueId = crypto.randomBytes(16).toString('hex');
-      const password = name.split(' ').join('').toLowerCase() + '123';
-      const hashedPassword = await bcryptjs.hash(password, 10);
-
-      const newGuest = new User({
-        name,
-        email,
-        password: hashedPassword,
-        phone,
-        role: 'GUEST',
-        uniqueId,
-        rsvp: 'PENDING',
-        events: [eventId]
-      });
-
-      await newGuest.save();
-
-      event.guestList.push(newGuest._id);
-      addedGuests.push(newGuest);
-
-      const uniqueLink = `http://localhost:5173/rsvp/${uniqueId}`;
-
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        auth: {
-          user: 'camryn.swift50@ethereal.email',
-          pass: 'kpMShENbgecV9W3qPm'
+  
+      const event = await Event.findById(eventId);
+      if (!event) {
+        return res.status(404).json({ error: 'Event not found' });
+      }
+  
+      const addedGuests = [];
+  
+      for (const guest of guests) {
+        const { name, email, phone } = guest;
+  
+        if (!email) {
+          return res.status(400).json({ error: 'Email is required for all guests' });
         }
-      });
-
-      const mailOptions = {
-        from: '"Event Manager" <priyam@gmail.com>',
-        to: email,
-        subject: 'RSVP for Event',
-        text: `Hello ${name},\n\nPlease RSVP for the event by clicking the link below:\n${uniqueLink}\n\nThank you! username: ${email} password: ${password}`,
-      };
-
-      await transporter.sendMail(mailOptions);
+  
+        const uniqueId = crypto.randomBytes(16).toString('hex');
+        const password = name.split(' ').join('').toLowerCase() + '123';
+        const hashedPassword = await bcryptjs.hash(password, 10);
+  
+        const newGuest = new User({
+          name,
+          email,
+          password: hashedPassword,
+          phone,
+          role: 'GUEST',
+          uniqueId,
+          rsvp: 'PENDING',
+          events: [eventId]
+        });
+  
+        await newGuest.save();
+  
+        event.guestList.push(newGuest._id);
+        addedGuests.push(newGuest);
+  
+        const uniqueLink = `https://party-pals.vercel.app/rsvp/${uniqueId}`;
+  
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.SMTP_HOST,
+            pass: process.env.SMTP_PASSWORD// Generate this in your Google account security settings
+          }
+        });
+  
+        const mailOptions = {
+          from: '"Event Manager" <priyam9maini@gmail.com>',
+          to: email,
+          subject: 'RSVP for Event',
+          text: `Hello ${name},\n\nPlease RSVP for the event by clicking the link below:\n${uniqueLink}\n\nThank you!`,
+        };
+  
+        await transporter.sendMail(mailOptions);
+      }
+  
+      await event.save();
+  
+      res.status(201).json({ message: 'Guests added and emails sent successfully', guests: addedGuests });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-
-    await event.save();
-
-    res.status(201).json({ message: 'Guests added and emails sent successfully', guests: addedGuests });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
   }
-}
 
 export const rsvpGet = async (req, res) => {
     try {
@@ -194,7 +193,7 @@ export const rsvpPost = async (req, res) => {
         }
 
         // Update the guest object with RSVP details
-        if (willAttend==='yes') {
+        if (willAttend === 'yes') {
             guest.rsvp = 'ACCEPTED';
         } else {
             guest.rsvp = 'DECLINED';
@@ -205,6 +204,26 @@ export const rsvpPost = async (req, res) => {
 
         // Save the updated guest object
         await guest.save();
+
+        // If the RSVP is accepted, send user credentials
+        if (willAttend === 'yes') {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.SMTP_HOST,
+                    pass: process.env.SMTP_PASSWORD // Generate this in your Google account security settings
+                }
+            });
+
+            const mailOptions = {
+                from: '"Event Manager" <priyam9maini@gmail.com>',
+                to: guest.email,
+                subject: 'Your Event Credentials',
+                text: `Hello ${guest.name},\n\nYour RSVP has been accepted. Here are your credentials:\nUsername: ${guest.email}\nPassword: ${guest.password}, use them to login at \n  https://party-pals.vercel.app \n\nThank you!`
+            };
+
+            await transporter.sendMail(mailOptions);
+        }
 
         // Send a success response
         res.send('RSVP submitted successfully');
@@ -304,7 +323,6 @@ export const getVendorList = async (req, res, next) => {
     }
 }
 
-
 export const addVendors = async (req, res, next) => {
     try {
         console.log(req.body); // Log the entire request body
@@ -361,22 +379,21 @@ export const addVendors = async (req, res, next) => {
             // Send an email to the vendor with the unique RSVP link
             const uniqueLink = `http://localhost:5173/rsvp/${uniqueId}`;
 
-            // Configure the email transport using nodemailer
+            // Configure the email transport using nodemailer with Gmail SMTP
             const transporter = nodemailer.createTransport({
-                host: 'smtp.ethereal.email',
-                port: 587,
+                service: 'gmail',
                 auth: {
-                    user: 'camryn.swift50@ethereal.email',
-                    pass: 'kpMShENbgecV9W3qPm'
+                    user: process.env.SMTP_HOST,
+                    pass: process.env.SMTP_PASSWORD // Generate this in your Google account security settings
                 }
             });
 
             // Define the email options
             const mailOptions = {
-                from: '"Event Manager" <priyam@gmail.com>',
+                from: '"Event Manager" <your-email@gmail.com>',
                 to: email,
                 subject: 'RSVP for Event',
-                text: `Hello ${name},\n\nPlease RSVP for the event by clicking the link below:\n${uniqueLink}\n\nThank you! username: ${email} password: ${password}`,
+                text: `Hello ${name},\n\nWelcome Onboard !! \n\nKindly access our website https://party-pals.vercel.app using username: ${email} password: ${password}`,
             };
 
             // Send the email
@@ -392,6 +409,7 @@ export const addVendors = async (req, res, next) => {
         res.status(500).json({ error: error });
     }
 }
+
 
 export const rsvpGetVendor = async (req, res) => {
     try {
