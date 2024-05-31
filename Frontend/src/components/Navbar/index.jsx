@@ -9,13 +9,13 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import Link and useNavigate from React Router
-import { logoutCall } from "../../ApiCalls"; // Import the logoutCall function
+import { Link, useNavigate } from "react-router-dom";
+import { logoutCall } from "../../ApiCalls";
 
 export default function Navbar({ bgColor }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { user, dispatch } = useContext(AuthContext);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,17 +28,17 @@ export default function Navbar({ bgColor }) {
   const handleLogout = () => {
     logoutCall(dispatch);
     handleMenuClose();
-    navigate("/"); // Redirect to login page after logout
+    navigate("/");
   };
 
   const menuItems = user
     ? [
         { name: "Dashboard", link: "/dashboard" },
-        { name: "Logout", action: handleLogout }
+        { name: "Logout", action: handleLogout },
       ]
     : [
         { name: "Login", link: "/login" },
-        { name: "Register", link: "/register" }
+        { name: "Sign UP", link: "/signup" },
       ];
 
   return (
@@ -100,7 +100,7 @@ export default function Navbar({ bgColor }) {
               },
             }}
           >
-            {menuItems.map((item, index) => (
+            {menuItems.map((item, index) =>
               item.link ? (
                 <Link
                   key={index}
@@ -127,7 +127,7 @@ export default function Navbar({ bgColor }) {
                   {item.name}
                 </MenuItem>
               )
-            ))}
+            )}
           </Menu>
         </Toolbar>
       </AppBar>

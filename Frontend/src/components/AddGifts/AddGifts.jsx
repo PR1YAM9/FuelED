@@ -87,6 +87,20 @@ const AddGifts = () => {
               fullWidth
               margin="normal"
               required
+              InputProps={{
+                sx: {
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#C3A8E1",
+                  },
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  "&.Mui-focused": {
+                    color: "#C3A8E1",
+                  },
+                },
+              }}
             />
             <TextField
               label="Gift Link"
@@ -95,6 +109,20 @@ const AddGifts = () => {
               fullWidth
               margin="normal"
               required
+              InputProps={{
+                sx: {
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#C3A8E1",
+                  },
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  "&.Mui-focused": {
+                    color: "#C3A8E1",
+                  },
+                },
+              }}
             />
             <Box mt={2}>
               <Button
