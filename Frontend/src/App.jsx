@@ -10,7 +10,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import "./App.css";
 import Messenger from "./pages/messanger/Messanger";
-import Register from "./pages/register/Register";
+import SignUp from "./pages/SignUp/SignUp";
 import RSVP from "./pages/RSVP";
 import SeatingPlan from "./pages/DashboardPages/SeatingPlan";
 import CreateEvent from "./pages/createEvent/CreateEvent";
@@ -28,18 +28,14 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-        <Route
-          path="/signup"
-          element={user ? <Navigate to="/" /> : <Register />}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route
           path="/messenger"
           element={user ? <Messenger /> : <Navigate to="/login" />}
         />
         <Route path="/rsvp/:uniqueId" element={<RSVP />} />
         <Route path="/dashboard/SeatingPlan" element={<SeatingPlan />} />
-
         <Route path="/dashboard/announcements" element={<Announcements />} />
         <Route path="/dashboard/BudgetManager" element={<BudgetManager />} />
         <Route path="/dashboard/Calender" element={<Calender />} />
