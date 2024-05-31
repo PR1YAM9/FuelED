@@ -22,7 +22,7 @@ export const AuthContextProvider = ({ children }) => {
                 user: state.user,
                 isFetching: state.isFetching,
                 error: state.error,
-                events: state.user.events,
+                events: state.user ? state.user.events : null,
                 dispatch,
             }}
         >
