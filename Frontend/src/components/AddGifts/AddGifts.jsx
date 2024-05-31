@@ -1,26 +1,25 @@
-import React, { useContext, useState } from 'react';
-import { Box, Button, Modal, TextField, Typography } from '@mui/material';
-import axios from 'axios';
-import { AuthContext } from '../../context/AuthContext';
+import React, { useContext, useState } from "react";
+import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 const AddGifts = () => {
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #E09BAC',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 280,
+    bgcolor: "background.paper",
     boxShadow: 24,
     pt: 2,
     px: 4,
     pb: 3,
   };
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const [giftName, setGiftName] = useState('');
-  const [giftLink, setGiftLink] = useState('');
+  const [giftName, setGiftName] = useState("");
+  const [giftLink, setGiftLink] = useState("");
   const eventId = user.events[1]; // Hardcoded event ID for now
 
   const handleOpen = () => {
@@ -40,30 +39,36 @@ const AddGifts = () => {
     };
 
     try {
-      const response = await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/giftregister/${eventId}`, giftData);
-      console.log('Gift registered successfully:', response.data);
-      // Reset the form fields after successful submission
-      setGiftName('');
-      setGiftLink('');
+      const response = await axios.post(
+        `https://fuel-ed-noyz.vercel.app/api/event/giftregister/${eventId}`,
+        giftData
+      );
+      console.log("Gift registered successfully:", response.data);
+      setGiftName("");
+      setGiftLink("");
       handleClose();
     } catch (error) {
-      console.error('Error registering gift:', error);
+      console.error("Error registering gift:", error);
     }
   };
 
   return (
     <>
-      <Button sx={{
-        ml: 6,
-        mt: 2,
-        color: "white",
-        display: "flex",
-        justifyContent: "left",
-        fontFamily: "Inconsolata",
-        backgroundColor: "#E09BAC",
-        borderRadius: "10px",
-        
-      }} onClick={handleOpen}>Add Gifts</Button>
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: "#C3A8E1",
+          fontFamily: "Imprima",
+          fontSize: { md: "20px", xs: "15px" },
+          borderRadius: "30px",
+          padding: "5px 30px",
+          "&:hover": { backgroundColor: "#C3A8E1" },
+          color: "white",
+        }}
+        onClick={handleOpen}
+      >
+        Add Gifts
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -92,10 +97,36 @@ const AddGifts = () => {
               required
             />
             <Box mt={2}>
-              <Button type="submit" variant="contained" color="primary">
+              <Button
+                type="submit"
+                onClick={handleClose}
+                variant="contained"
+                sx={{
+                  backgroundColor: "#C3A8E1",
+                  fontFamily: "Imprima",
+                  fontSize: { md: "20px", xs: "15px" },
+                  borderRadius: "30px",
+                  padding: "5px 30px",
+                  "&:hover": { backgroundColor: "#C3A8E1" },
+                  color: "white",
+                }}
+              >
                 Submit
               </Button>
-              <Button onClick={handleClose} variant="outlined" sx={{ ml: 2 }}>
+              <Button
+                onClick={handleClose}
+                variant="contained"
+                sx={{
+                  backgroundColor: "#C3A8E1",
+                  fontFamily: "Imprima",
+                  fontSize: { md: "20px", xs: "15px" },
+                  borderRadius: "30px",
+                  padding: "5px 30px",
+                  "&:hover": { backgroundColor: "#C3A8E1" },
+                  color: "white",
+                  ml: 7,
+                }}
+              >
                 Cancel
               </Button>
             </Box>

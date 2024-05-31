@@ -8,9 +8,10 @@ import Box from "@mui/material/Box";
 import SeatingPlanPreview from "../../components/SeatingPlanPreview";
 
 export default function SeatingPlan() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const dropdownOptions = [
     "Oliver",
     "Emma",

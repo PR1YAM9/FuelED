@@ -111,7 +111,13 @@ export default function SeatingPlanTable({
         {Array.from({ length: numberOfRows }).map((_, rowIndex) => (
           <tr key={rowIndex}>
             {columns.map((column, colIndex) => (
-              <td key={colIndex} data-label={column}>
+              <td
+                key={colIndex}
+                data-label={column}
+                style={{
+                  height: "60px",
+                }}
+              >
                 <SearchableDropdown
                   options={getFilteredOptions(colIndex, rowIndex)}
                   value={selectedValues[rowIndex][colIndex]}

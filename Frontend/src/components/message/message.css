@@ -1,44 +1,43 @@
 .message {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-  }
-  
-  .messageTop{
-      display: flex;
-  }
-  
-  .messageImg {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
-  }
-  
-  .messageText{
-      padding: 10px;
-      border-radius: 20px;
-      background-color: #1877f2;
-      color: white;
-      font-family: 'Imprima', sans-serif;
-      max-width: 300px;
-  }
-  
-  .messageBottom{
-      font-size: 12px;
-      margin-top: -6px;
-        color: gray;
-        font-family: "Imprima", sans-serif;
-  }
-  
-  .message.own{
-      align-items: flex-end;
-  }
-  
-  .message.own .messageText{
-      background-color: #c6d3bd;
-      color: black;
-      font-family: 'Imprima', sans-serif;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
 
-  }
+.messageTop {
+  display: flex;
+}
+
+.messageImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.messageText {
+  padding: 10px 15px;
+  border-radius: 20px;
+  background-color: #e09bac;
+  color: black;
+  font-family: "Imprima", sans-serif;
+  max-width: 300px;
+}
+
+.messageBottom {
+  font-size: 12px;
+  margin-top: -6px;
+  color: gray;
+  font-family: "Imprima", sans-serif;
+}
+
+.message.own {
+  align-items: flex-end;
+}
+
+.message.own .messageText {
+  background-color: #c6d3bd;
+  color: black;
+  font-family: "Imprima", sans-serif;
+}

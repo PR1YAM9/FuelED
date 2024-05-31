@@ -1,10 +1,10 @@
-import React from 'react';
-import './TableRegistry.css';
+import React from "react";
+import "./TableRegistry.css";
 
 const TableRegistry = ({ gifts }) => {
   return (
     <>
-      <table style={{ marginTop: '30px' }}>
+      <table style={{ marginTop: "30px" }}>
         <thead>
           <tr>
             <th scope="col">Gift Name</th>
@@ -18,7 +18,12 @@ const TableRegistry = ({ gifts }) => {
             <tr key={index}>
               <td data-label="Gift Name">{gift.name}</td>
               <td data-label="Link">
-                <a href={gift.link} target="_blank" rel="noopener noreferrer">
+                <a
+                  className="a-table"
+                  href={gift.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   View Gift
                 </a>
               </td>

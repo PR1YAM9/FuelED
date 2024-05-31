@@ -6,11 +6,12 @@ import Table from "../../components/Table";
 import AddGuestModal from "../../components/AddGuestModal";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function GuestList() {
   const [guests, setGuests] = useState([]);
   const [open, setOpen] = useState(false);
-  const [guestList, setGuestList] = useState([]);
+  const [loader, setLoader] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     contact: "",
@@ -18,25 +19,30 @@ export default function GuestList() {
     plusOne: false,
   });
 
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const fetchGuestList = async () => {
+      setLoader(true);
       try {
-        const response = await axios.get(`https://fuel-ed-noyz.vercel.app/api/event/guestList/${user.events[0]}`);
+        const response = await axios.get(
+          `https://fuel-ed-noyz.vercel.app/api/event/guestList/${user.events[0]}`
+        );
         setGuests(response.data.guests);
+        setLoader(false);
       } catch (error) {
         console.error("Error fetching guest list:", error);
+        setLoader(false);
       }
     };
-  
-    fetchGuestList();
-  }, []);
 
-    console.log(guests);
-  const columns = [ "Name", "phone", "Email", ];
+    fetchGuestList();
+  }, [user.events]);
+
+  console.log(guests);
+  const columns = ["Name", "phone", "Email"];
 
   return (
     <div>
@@ -75,8 +81,26 @@ export default function GuestList() {
         >
           Add Guest
         </Button>
-        
-<Table columns={columns} data={guests} />
+
+        {loader ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "top",
+              mt: 3,
+            }}
+          >
+            <CircularProgress
+              sx={{
+                color: "#E09BAC",
+              }}
+            />
+          </Box>
+        ) : (
+          <Table columns={columns} data={guests} />
+        )}
+
         <AddGuestModal
           open={open}
           handleClose={handleClose}
