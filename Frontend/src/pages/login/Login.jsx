@@ -19,17 +19,17 @@ const Login = () => {
 
   const { user, isFetching, error, dispatch } = useContext(AuthContext);
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    loginCall(
-      { email: email.current.value, password: password.current.value },
-      dispatch
-    ).then(() => {
-      if (!error) {
+    const response = await loginCall(
+        { email: email.current.value, password: password.current.value },
+        dispatch
+    );
+    if (response && !response.error) {
         navigate("/dashboard");
-      }
-    });
-  };
+    }
+};
+
   return (
     <Container component="main" maxWidth="xs">
       <Box

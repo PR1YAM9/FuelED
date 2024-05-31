@@ -8,11 +8,7 @@ const AnnouncementSchema = new mongoose.Schema(
       ref: "Event",
       required: true,
     },
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
+    text: {
       type: String,
       required: true,
     },

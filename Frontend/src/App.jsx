@@ -14,7 +14,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import RSVP from "./pages/RSVP";
 import SeatingPlan from "./pages/DashboardPages/SeatingPlan";
 import CreateEvent from "./pages/createEvent/CreateEvent";
-import Announcements from "./pages/DashboardPages/Announcements";
+import Announcements from "./pages/DashboardPages/annoucement/Announcements";
 import BudgetManager from "./pages/DashboardPages/BudgetManager";
 import Calender from "./pages/DashboardPages/Calender";
 import GiftRegistary from "./pages/DashboardPages/GiftRegistary";
