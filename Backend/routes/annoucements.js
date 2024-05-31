@@ -5,13 +5,12 @@ import { verifyHost } from "../utils/verifyUser.js";
 const router = express.Router();
 
 // Route to create an announcement
-router.post("/:eventId", verifyHost, async (req, res) => {
+router.post("/:eventId", async (req, res) => {
     const eventId = req.params.eventId;
   const newAnnouncement = new Announcement({
     eventId: eventId,
-    title: req.body.title,
-    description: req.body.description,
-    createdBy: req.user.id,
+    text: req.body.text,
+    createdBy: req.body.user,
   });
 
   try {
