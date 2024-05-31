@@ -5,20 +5,25 @@ import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const EventDetails = () => {
+  const [loader, setLoader] = useState(false);
   const { user } = useContext(AuthContext);
   const [eventDetails, setEventDetails] = useState(null);
 
   useEffect(() => {
     const fetchEventDetails = async () => {
+      setLoader(true);
       try {
         const res = await axios.get(
           `https://fuel-ed-noyz.vercel.app/api/event/geteventdetails/${user.events[1]}`
         );
         setEventDetails(res.data.event);
+        setLoader(false);
       } catch (error) {
         console.log(error);
+        setLoader(false);
       }
     };
 
@@ -67,106 +72,122 @@ const EventDetails = () => {
           Event Details
         </Typography>
       </Box>
+      {loader ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "top",
+            mt: 3,
+          }}
+        >
+          <CircularProgress
+            sx={{
+              color: "#E09BAC",
+            }}
+          />
+        </Box>
+      ) : (
+        <Stack
+          direction="column"
+          sx={{ mt: 5, justifyContent: "center", alignItems: "center" }}
+        >
+          <Typography
+            variant="caption"
+            display="block"
+            sx={{ color: "#00000087" }}
+            gutterBottom
+          >
+            Event Name
+          </Typography>
+          <Chip
+            sx={{
+              width: "200px",
+              color: "black",
+              display: "flex",
+              justifyContent: "center",
+              fontFamily: "Inconsolata",
+            }}
+            label={eventDetails?.eventName}
+          />
 
-      <Stack
-        direction="column"
-        sx={{ mt: 5, justifyContent: "center", alignItems: "center" }}
-      >
-        <Typography
-          variant="caption"
-          display="block"
-          sx={{ color: "#00000087" }}
-          gutterBottom
-        >
-          Event Name
-        </Typography>
-        <Chip
-          sx={{
-            width: "200px",
-            color: "black",
-            display: "flex",
-            justifyContent: "center",
-            fontFamily: "Inconsolata",
-          }}
-          label={eventDetails?.eventName}
-        />
+          <Typography
+            variant="caption"
+            display="block"
+            sx={{ color: "#00000087", mt: 3 }}
+            gutterBottom
+          >
+            Start Date and Time
+          </Typography>
+          <Chip
+            sx={{
+              width: "200px",
+              color: "black",
+              display: "flex",
+              justifyContent: "center",
+              fontFamily: "Inconsolata",
+            }}
+            label={formattedTime}
+          />
 
-        <Typography
-          variant="caption"
-          display="block"
-          sx={{ color: "#00000087", mt: 3 }}
-          gutterBottom
-        >
-          Start Date and Time
-        </Typography>
-        <Chip
-          sx={{
-            width: "200px",
-            color: "black",
-            display: "flex",
-            justifyContent: "center",
-            fontFamily: "Inconsolata",
-          }}
-          label={formattedTime}
-        />
+          <Typography
+            variant="caption"
+            display="block"
+            sx={{ color: "#00000087", mt: 3 }}
+            gutterBottom
+          >
+            Start Date and Time
+          </Typography>
+          <Chip
+            sx={{
+              width: "200px",
+              color: "black",
+              display: "flex",
+              justifyContent: "center",
+              fontFamily: "Inconsolata",
+            }}
+            label={formattedEndTime}
+          />
 
-        <Typography
-          variant="caption"
-          display="block"
-          sx={{ color: "#00000087", mt: 3 }}
-          gutterBottom
-        >
-          Start Date and Time
-        </Typography>
-        <Chip
-          sx={{
-            width: "200px",
-            color: "black",
-            display: "flex",
-            justifyContent: "center",
-            fontFamily: "Inconsolata",
-          }}
-          label={formattedEndTime}
-        />
-
-        <Typography
-          variant="caption"
-          display="block"
-          sx={{ color: "#00000087", mt: 3 }}
-          gutterBottom
-        >
-          Venue
-        </Typography>
-        <Chip
-          sx={{
-            width: "200px",
-            color: "black",
-            display: "flex",
-            justifyContent: "center",
-            fontFamily: "Inconsolata",
-          }}
-          label={eventDetails?.venue.address}
-        />
-        <Typography
-          variant="caption"
-          display="block"
-          sx={{ color: "#00000087", mt: 3 }}
-          gutterBottom
-        >
-          Maps Link
-        </Typography>
-        <Chip
-          sx={{
-            width: "200px",
-            color: "black",
-            display: "flex",
-            justifyContent: "center",
-            fontFamily: "Inconsolata",
-          }}
-          href={eventDetails?.venue.mapsLink}
-          label="Click here"
-        />
-      </Stack>
+          <Typography
+            variant="caption"
+            display="block"
+            sx={{ color: "#00000087", mt: 3 }}
+            gutterBottom
+          >
+            Venue
+          </Typography>
+          <Chip
+            sx={{
+              width: "200px",
+              color: "black",
+              display: "flex",
+              justifyContent: "center",
+              fontFamily: "Inconsolata",
+            }}
+            label={eventDetails?.venue.address}
+          />
+          <Typography
+            variant="caption"
+            display="block"
+            sx={{ color: "#00000087", mt: 3 }}
+            gutterBottom
+          >
+            Maps Link
+          </Typography>
+          <Chip
+            sx={{
+              width: "200px",
+              color: "black",
+              display: "flex",
+              justifyContent: "center",
+              fontFamily: "Inconsolata",
+            }}
+            href={eventDetails?.venue.mapsLink}
+            label="Click here"
+          />
+        </Stack>
+      )}
     </Box>
   );
 };

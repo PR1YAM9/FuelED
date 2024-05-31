@@ -7,16 +7,15 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 export default function SideBar() {
   const { user } = React.useContext(AuthContext);
@@ -25,7 +24,43 @@ export default function SideBar() {
   const [state, setState] = useState({
     left: false,
   });
-  const [activeTab, setActiveTab] = useState("Dashboard");
+  const { pathname } = useLocation();
+  const params = useParams();
+  const [event, setEvent] = useState("");
+
+  const handleChange = (event) => {
+    setEvent(event.target.value);
+  };
+
+  const getActiveTab = () => {
+    const paths = pathname.split("/");
+    const tabPath = paths[paths.length - 1];
+
+    switch (tabPath) {
+      case "dashboard":
+        return "Dashboard";
+      case "GuestList":
+        return "Guest List";
+      case "VendorsList":
+        return "Vendors List";
+      case "messenger":
+        return "Messenger";
+      case "BudgetManager":
+        return "Budget Manager";
+      case "SeatingPlan":
+        return "Seating Place";
+      case "GiftRegistary":
+        return "Gift Registry";
+      case "Calender":
+        return "Calendar";
+      case "announcements":
+        return "Announcements";
+      default:
+        return "Dashboard";
+    }
+  };
+
+  const [activeTab, setActiveTab] = useState(getActiveTab());
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -38,14 +73,8 @@ export default function SideBar() {
     setState({ ...state, [anchor]: open });
   };
 
-  const [event, setEvent] = useState("");
-  const handleChange = (event) => {
-    setEvent(event.target.value);
-  };
-
   const handleListItemClick = (text) => {
     setActiveTab(text);
-    localStorage.setItem("activeTab", text);
   };
 
   const list = (anchor) => (
@@ -117,31 +146,6 @@ export default function SideBar() {
         >
           Create Event
         </Button>
-        {/* <Typography>Select event</Typography>
-        <FormControl sx={{ m: 1, minWidth: 120, borderRadius: "40px" }}>
-          <Select
-            value={event}
-            onChange={handleChange}
-            displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-            sx={{
-              borderRadius: "40px",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderRadius: "40px",
-              },
-              padding: "0px 60px",
-              bgcolor: "white",
-              boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl> */}
       </Box>
       <List>
         {[
@@ -193,11 +197,6 @@ export default function SideBar() {
     </Box>
   );
 
-  useEffect(() => {
-    const storedTab = localStorage.getItem("activeTab");
-    if (storedTab) setActiveTab(storedTab);
-  }, []);
-
   return (
     <div>
       <React.Fragment key="left">
@@ -209,11 +208,11 @@ export default function SideBar() {
           }}
         >
           <MenuIcon
-            sx={{ color: "black" }}
+            sx={{ color: "#E09BAC" }}
             onClick={toggleDrawer("left", true)}
             fontSize="large"
           />
-          <AccountCircleIcon sx={{ color: "black" }} fontSize="large" />
+          <AccountCircleIcon sx={{ color: "#E09BAC" }} fontSize="large" />
         </Box>
 
         <Drawer

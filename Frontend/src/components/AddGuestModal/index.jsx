@@ -29,7 +29,12 @@ const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-export default function AddGuestModal({ open, handleClose, formData, setFormData }) {
+export default function AddGuestModal({
+  open,
+  handleClose,
+  formData,
+  setFormData,
+}) {
   const { user } = React.useContext(AuthContext);
 
   const handleChange = (e) => {
@@ -179,7 +184,7 @@ export default function AddGuestModal({ open, handleClose, formData, setFormData
                 color: "white",
               }}
             >
-              Add Guest
+              Send Invite
             </Button>
             <Button
               onClick={handleClose}

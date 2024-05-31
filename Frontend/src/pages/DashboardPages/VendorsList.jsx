@@ -7,11 +7,11 @@ import { useContext, useEffect, useState } from "react";
 import AddVendorModal from "../../components/AddVendorModal/AddVendorModal";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function VendorsList() {
-
-  const {user} = useContext(AuthContext);
-
+  const { user } = useContext(AuthContext);
+  const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -22,21 +22,27 @@ export default function VendorsList() {
     phone: "",
     email: "",
     serviceType: "",
-    companyName: "", 
+    companyName: "",
   });
-  const columns = [ "Name", "phone", "Email", "Service type", "Company Name"];
+  const columns = ["Name", "phone", "Email", "Service type", "Company Name"];
 
   useEffect(() => {
     const fetchVendorList = async () => {
+      setLoader(true);
+
       try {
-        const response = await axios.get(`https://fuel-ed-noyz.vercel.app/api/event/vendors/${user.events[0]}`);
+        const response = await axios.get(
+          `https://fuel-ed-noyz.vercel.app/api/event/vendors/${user.events[0]}`
+        );
         setVendors(response.data.vendors);
         console.log(response.data.vendors);
+        setLoader(false);
       } catch (error) {
         console.error("Error fetching guest list:", error);
+        setLoader(false);
       }
     };
-  
+
     fetchVendorList();
   }, []);
 
@@ -77,7 +83,25 @@ export default function VendorsList() {
         >
           Onboard Vendor
         </Button>
-        <Table columns={columns} data={vendors} />
+        {loader ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "top",
+              mt: 3,
+            }}
+          >
+            <CircularProgress
+              sx={{
+                color: "#E09BAC",
+              }}
+            />
+          </Box>
+        ) : (
+          <Table columns={columns} data={vendors} />
+        )}
+
         <AddVendorModal
           open={open}
           handleClose={handleClose}

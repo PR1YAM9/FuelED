@@ -1,19 +1,21 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import ChatOnlineC from '../../components/chatOnline/ChatOnlineC';
-import Conversation from '../../components/conversations/Conversation';
-import Message from '../../components/message/Message';
-import './messanger.css';
-import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
-import { io } from 'socket.io-client';
-import SideBar from '../../components/SideBar';
-import Navbar from '../../components/Navbar';
+import { useContext, useEffect, useRef, useState } from "react";
+import ChatOnlineC from "../../components/chatOnline/ChatOnlineC";
+import Message from "../../components/message/Message";
+import "./messanger.css";
+import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
+import { io } from "socket.io-client";
+import SideBar from "../../components/SideBar";
+import { Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const Messanger = () => {
+  const [loader, setLoader] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { user } = useContext(AuthContext);
@@ -22,32 +24,35 @@ const Messanger = () => {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900", { transports: ['websocket'] });
-    socket.current.on('getMessage', (data) => {
+    socket.current = io("ws://localhost:8900", { transports: ["websocket"] });
+    socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
-        createdAt: Date.now()
+        createdAt: Date.now(),
       });
     });
   }, []);
 
   useEffect(() => {
-    arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) &&
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.current.emit('addUser', user._id);
-    socket.current.on('getUsers', (users) => {
-      //
+    socket.current.emit("addUser", user._id);
+    socket.current.on("getUsers", (users) => {
+      // Implement your logic here
     });
   }, [user]);
 
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get('https://fuel-ed-noyz.vercel.app/api/conversations/' + user._id);
+        const res = await axios.get(
+          `https://fuel-ed-noyz.vercel.app/api/conversations/${user._id}`
+        );
         setConversations(res.data);
       } catch (err) {
         console.log(err);
@@ -58,11 +63,16 @@ const Messanger = () => {
 
   useEffect(() => {
     const getMessages = async () => {
+      setLoader(true);
       try {
-        const res = await axios.get('https://fuel-ed-noyz.vercel.app/api/messages/' + currentChat?._id);
+        const res = await axios.get(
+          `https://fuel-ed-noyz.vercel.app/api/messages/${currentChat?._id}`
+        );
         setMessages(res.data);
+        setLoader(false);
       } catch (err) {
         console.log(err);
+        setLoader(false);
       }
     };
     getMessages();
@@ -73,74 +83,104 @@ const Messanger = () => {
     const message = {
       sender: user._id,
       text: newMessage,
-      conversationId: currentChat._id
+      conversationId: currentChat._id,
     };
 
-    const receiverId = currentChat.members.find((member) => member !== user._id);
+    const receiverId = currentChat.members.find(
+      (member) => member !== user._id
+    );
 
-    socket.current.emit('sendMessage', {
+    socket.current.emit("sendMessage", {
       senderId: user._id,
-      receiverId: receiverId,
-      text: newMessage
+      receiverId,
+      text: newMessage,
     });
 
     try {
-      const res = await axios.post('https://fuel-ed-noyz.vercel.app/api/messages', message);
+      const res = await axios.post(
+        "https://fuel-ed-noyz.vercel.app/api/messages",
+        message
+      );
       setMessages([...messages, res.data]);
-      setNewMessage('');
+      setNewMessage("");
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
     <>
-    <SideBar/>
+      <SideBar />
+      <Typography
+        variant="h3"
+        sx={{
+          color: "#E09BAC",
+          display: "flex",
+          justifyContent: "center",
+          fontFamily: "Inconsolata",
+        }}
+      >
+        Messenger
+      </Typography>
       <div className="messenger">
-        {/* <div className="chatMenu">
-          <div className="chatMenuWrapper">
-            <input type="text" placeholder='Search for vendors' className='chatMenuInput' />
-            {conversations.map((c) => (
-              <div onClick={() => setCurrentChat(c)} key={c._id}>
-                <Conversation conversation={c} currentUser={user} />
-              </div>
-            ))}
-          </div>
-        </div> */}
         <div className="chatBox">
           <div className="chatBoxWrapper">
-            {
-              currentChat ?
-                <>
-                  <div className="chatBoxTop">
-                    {messages.map((m) => (
-                      <div key={m._id} ref={scrollRef}>
-                        <Message message={m} own={m.sender === user._id} />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="chatBoxBottom">
-                    <input
-                      type='text'
-                      placeholder='Write here'
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      value={newMessage}
-                      className='chatMessageInput'
-                    ></input>
-                    <button className='chatSubmitButton' onClick={handleSubmit}>Send</button>
-                  </div>
-                </> : <span className='noConversation'>Open a conversation to start a chat</span>
-            }
+            {loader ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "top",
+                  mt: 13,
+                }}
+              >
+                <CircularProgress
+                  sx={{
+                    color: "#E09BAC",
+                  }}
+                />
+              </Box>
+            ) : (
+              <div className="chatBoxWrapper">
+                {currentChat ? (
+                  <>
+                    <div className="chatBoxTop">
+                      {messages.map((m) => (
+                        <div key={m._id} ref={scrollRef}>
+                          <Message message={m} own={m.sender === user._id} />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="chatBoxBottom">
+                      <input
+                        type="text"
+                        placeholder="Write here"
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        value={newMessage}
+                        className="chatMessageInput"
+                      />
+                      <button
+                        className="chatSubmitButton"
+                        onClick={handleSubmit}
+                      >
+                        Send
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <span className="noConversation"></span>
+                )}
+              </div>
+            )}
           </div>
         </div>
         <div className="chatOnline">
           <div className="chatOnlineWrapper">
-            <ChatOnlineC currentId={user._id}
-              setCurrentChat={setCurrentChat}/>
+            <ChatOnlineC currentId={user._id} setCurrentChat={setCurrentChat} />
           </div>
         </div>
       </div>
