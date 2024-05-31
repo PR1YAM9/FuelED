@@ -108,7 +108,6 @@ export default function SeatingPlanPreview({
           variant="contained"
           sx={{
             backgroundColor: "#C3A8E1",
-            color: "black",
             fontFamily: "Imprima",
             fontSize: { md: "29px", xs: "15px" },
             borderRadius: "30px",
