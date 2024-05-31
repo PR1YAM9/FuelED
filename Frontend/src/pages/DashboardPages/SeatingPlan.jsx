@@ -148,7 +148,6 @@ export default function SeatingPlan() {
           onClick={handleCreateTable}
           sx={{
             backgroundColor: "#C3A8E1",
-            color: "black",
             fontFamily: "Imprima",
             fontSize: { md: "20px", xs: "15px" },
             borderRadius: "30px",
@@ -183,7 +182,6 @@ export default function SeatingPlan() {
           onClick={handleSubmit}
           sx={{
             backgroundColor: "#C3A8E1",
-            color: "black",
             fontFamily: "Imprima",
             fontSize: { md: "29px", xs: "15px" },
             borderRadius: "30px",
@@ -200,7 +198,6 @@ export default function SeatingPlan() {
           onClick={handleOpen}
           sx={{
             backgroundColor: "#C3A8E1",
-            color: "black",
             fontFamily: "Imprima",
             fontSize: { md: "29px", xs: "15px" },
             borderRadius: "30px",

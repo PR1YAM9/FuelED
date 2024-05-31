@@ -38,7 +38,7 @@ export default function Navbar({ bgColor }) {
       ]
     : [
         { name: "Login", link: "/login" },
-        { name: "Sign UP", link: "/signup" },
+        { name: "Sign Up", link: "/signup" },
       ];
 
   return (

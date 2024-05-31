@@ -2,7 +2,7 @@ import React, { useContext, useRef } from "react";
 import "./login.css";
 import { loginCall } from "../../ApiCalls";
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -15,6 +15,7 @@ import Container from "@mui/material/Container";
 const Login = () => {
   const email = useRef();
   const password = useRef();
+  const navigate = useNavigate();
 
   const { user, isFetching, error, dispatch } = useContext(AuthContext);
 
@@ -23,7 +24,11 @@ const Login = () => {
     loginCall(
       { email: email.current.value, password: password.current.value },
       dispatch
-    );
+    ).then(() => {
+      if (!error) {
+        navigate("/dashboard");
+      }
+    });
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -98,7 +103,6 @@ const Login = () => {
             variant="contained"
             sx={{
               backgroundColor: "#C3A8E1",
-              color: "black",
               fontFamily: "Imprima",
               fontSize: { md: "20px", xs: "15px" },
               borderRadius: "30px",
