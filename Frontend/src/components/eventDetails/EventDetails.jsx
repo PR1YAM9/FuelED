@@ -17,7 +17,7 @@ const EventDetails = () => {
       setLoader(true);
       try {
         const res = await axios.get(
-          `https://fuel-ed-noyz.vercel.app/api/event/geteventdetails/${user.events[1]}`
+          `https://fuel-ed-noyz.vercel.app/api/event/geteventdetails/${user.events[0]}`
         );
         setEventDetails(res.data.event);
         setLoader(false);
