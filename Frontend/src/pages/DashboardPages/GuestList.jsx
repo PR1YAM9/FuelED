@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SideBar from "../../components/SideBar";
 import Box from "@mui/material/Box";
 import { Typography, Button } from "@mui/material";
 import Table from "../../components/Table";
 import AddGuestModal from "../../components/AddGuestModal";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function GuestList() {
   const [guests, setGuests] = useState([]);
@@ -17,13 +18,14 @@ export default function GuestList() {
     plusOne: false,
   });
 
+  const {user} = useContext(AuthContext);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const fetchGuestList = async () => {
       try {
-        const response = await axios.get("https://fuel-ed-noyz.vercel.app/api/event/guestList/66473f2db3c877acac6f5494");
+        const response = await axios.get(`https://fuel-ed-noyz.vercel.app/api/event/guestList/${user.events[0]}`);
         setGuests(response.data.guests);
       } catch (error) {
         console.error("Error fetching guest list:", error);
@@ -31,10 +33,10 @@ export default function GuestList() {
     };
   
     fetchGuestList();
-  }, []);// Empty dependency array to fetch data only once on component mount
+  }, []);
 
-    console.log(guestList);
-  const columns = [ "Name", "phone", "Email", "+1"];
+    console.log(guests);
+  const columns = [ "Name", "phone", "Email", ];
 
   return (
     <div>
@@ -81,23 +83,6 @@ export default function GuestList() {
           setFormData={setFormData}
           formData={formData}
         />
-        <Button
-          variant="contained"
-          onClick={handleOpen}
-          sx={{
-            backgroundColor: "#C3A8E1",
-            fontFamily: "Imprima",
-            fontSize: { md: "20px", xs: "15px" },
-            borderRadius: "30px",
-            padding: "5px 30px",
-            "&:hover": { backgroundColor: "#C3A8E1" },
-            mb: { md: "30px", xs: "15px" },
-            color: "white",
-            mt: 2,
-          }}
-        >
-          Send Invite
-        </Button>
       </Box>
     </div>
   );

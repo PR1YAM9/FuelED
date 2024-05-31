@@ -9,10 +9,13 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
-import { Link } from "react-router-dom"; // Import Link from React Router
+import { Link, useNavigate } from "react-router-dom"; // Import Link and useNavigate from React Router
+import { logoutCall } from "../../ApiCalls"; // Import the logoutCall function
 
 export default function Navbar({ bgColor }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { user, dispatch } = useContext(AuthContext);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,11 +25,21 @@ export default function Navbar({ bgColor }) {
     setAnchorEl(null);
   };
 
-  const { user } = useContext(AuthContext);
+  const handleLogout = () => {
+    logoutCall(dispatch);
+    handleMenuClose();
+    navigate("/"); // Redirect to login page after logout
+  };
 
   const menuItems = user
-    ? [{ name: "Dashboard", link: "/dashboard" }, { name: "Logout", link: "/logout" }]
-    : [{ name: "Login", link: "/login" }, { name: "Register", link: "/register" }];
+    ? [
+        { name: "Dashboard", link: "/dashboard" },
+        { name: "Logout", action: handleLogout }
+      ]
+    : [
+        { name: "Login", link: "/login" },
+        { name: "Register", link: "/register" }
+      ];
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -88,17 +101,32 @@ export default function Navbar({ bgColor }) {
             }}
           >
             {menuItems.map((item, index) => (
-              <Link to={item.link} style={{ textDecoration: "none", color: "inherit" }}>
+              item.link ? (
+                <Link
+                  key={index}
+                  to={item.link}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <MenuItem
+                    onClick={handleMenuClose}
+                    sx={{
+                      fontFamily: "Imprima",
+                    }}
+                  >
+                    {item.name}
+                  </MenuItem>
+                </Link>
+              ) : (
                 <MenuItem
                   key={index}
-                  onClick={handleMenuClose}
+                  onClick={item.action}
                   sx={{
                     fontFamily: "Imprima",
                   }}
                 >
-                 {item.name}
+                  {item.name}
                 </MenuItem>
-              </Link>
+              )
             ))}
           </Menu>
         </Toolbar>

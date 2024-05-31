@@ -12,9 +12,12 @@ export default function Table({ columns, data }) {
         return "phone";
       case "email":
         return "email";
+      case "service type":
+        return "serviceType";
+      case "company name":
+        return "companyName";
       case "+1":
-        return "+1";
-
+        return "plusOne";
       default:
         return column.toLowerCase().replace(/ /g, "");
     }

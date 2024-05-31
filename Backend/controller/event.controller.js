@@ -290,6 +290,21 @@ export const selectGift = async (req, res) => {
     }
 };
 
+export const getVendorList = async (req, res, next) => {
+    try {
+        const event = await Event.findById(req.params.eventId).populate('vendors');
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        res.status(200).json({ vendors: event.vendors });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
 export const addVendors = async (req, res, next) => {
     try {
         console.log(req.body); // Log the entire request body
