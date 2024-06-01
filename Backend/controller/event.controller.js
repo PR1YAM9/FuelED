@@ -477,3 +477,90 @@ export const rsvpPostVendor = async (req, res) => {
         res.status(500).send('Internal server error');
     }
 };
+
+
+export const addBudget = async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+        const { totalBudget } = req.body;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        event.budget.total = totalBudget;
+
+        await event.save();
+
+        res.status(200).json({ message: 'Budget added successfully', event });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export const getBudget = async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        res.status(200).json({ budget: event.budget });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export const addExpense = async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+        const { transactionTo, status, date, amount } = req.body;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        const newExpense = {
+            transactionTo,
+            status: status || 'PENDING',  // Default to 'PENDING' if status is not provided
+            date ,
+            amount
+        };
+
+        event.budget.expenses.push(newExpense);
+
+        await event.save();
+
+        res.status(200).json({ message: 'Expense added successfully', event });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export const getExpenses = async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        res.status(200).json({ expenses: event.budget.expenses });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
+}

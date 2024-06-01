@@ -31,22 +31,20 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route
-          path="/messenger"
-          element={user ? <Messenger /> : <Navigate to="/login" />}
-        />
-        <Route path="/rsvp/:uniqueId" element={<RSVP />} />
-        <Route path="/dashboard/SeatingPlan" element={<SeatingPlan />} />
-        <Route path="/dashboard/announcements" element={<Announcements />} />
-        <Route path="/dashboard/BudgetManager" element={<BudgetManager />} />
-        <Route path="/dashboard/Calender" element={<Calender />} />
-        <Route path="/dashboard/GiftRegistary" element={<GiftRegistary />} />
-        <Route path="/dashboard/GuestList" element={<GuestList />} />
-        <Route path="/dashboard/VendorsList" element={<VendorsList />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/createevent" element={<CreateEvent />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/messenger" element={user ? <Messenger /> : <Navigate to="/login" />}/>
+        <Route path="/dashboard/SeatingPlan" element={user ? <SeatingPlan /> :  <Navigate to="/login" />} />
+        <Route path="/dashboard/announcements" element={user ?  <Announcements /> :  <Navigate to="/login" />} />
+        <Route path="/dashboard/BudgetManager" element={user ? <BudgetManager /> :  <Navigate to="/login" />} />
+        <Route path="/dashboard/Calender" element={user ?  <Calender /> :  <Navigate to="/login" />} />
+        <Route path="/dashboard/GiftRegistary" element={user ? <GiftRegistary /> :  <Navigate to="/login" />} />
+        <Route path="/dashboard/GuestList" element={user ?  <GuestList /> :  <Navigate to="/login" />} />
+        <Route path="/dashboard/VendorsList" element={user ?  <VendorsList /> :  <Navigate to="/login" />} />
+        <Route path="/dashboard" element={user ?  <Dashboard /> :  <Navigate to="/login" />} />
+        <Route path="/createevent" element={user ?  <CreateEvent /> :  <Navigate to="/login" />} />
+        <Route path="/profile" element={user ? <Profile /> :  <Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/" />} />
+
+        <Route path="/rsvp/:uniqueId" element={<RSVP />} />
       </Routes>
     </Router>
   );

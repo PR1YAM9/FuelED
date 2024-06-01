@@ -59,8 +59,7 @@ export default function RsvpForm() {
         dietaryRestrictions,
         allergies,
       };
-// https://fuel-ed-noyz.vercel.app
-      const response = await axios.post(`/api/event/rsvp/${uniqueId}`, formData);
+      const response = await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/rsvp/${uniqueId}`, formData);
 
       if (response.status === 200) {
         console.log("RSVP submitted successfully");

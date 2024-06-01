@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./home.css";
 import HomeCard from "../../components/HomeCard/HomeCard";
 import homeCardImage from "../../assets/guestList.svg";
@@ -114,7 +114,7 @@ const Home = () => {
             view the detailed plans, making it easier to deliver top-notch
             services and contribute to a flawless event.
           </div>
-          <button className="HomeButtonSC">Onboard Vendors</button>
+          <Link to={'/dashboard/VendorsList'}><button className="HomeButtonSC">Onboard Vendors</button></Link>
         </div>
         <div className="homeSubSection2">
           <AboutUs />

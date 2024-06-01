@@ -215,7 +215,9 @@ export default function SideBar() {
             onClick={toggleDrawer("left", true)}
             fontSize="large"
           />
+          <Link to={'/profile'}>
           <AccountCircleIcon sx={{ color: "#E09BAC" }} fontSize="large" />
+          </Link>
         </Box>
 
         <Drawer

@@ -85,7 +85,20 @@ const eventSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         }
-    }]
+    }],
+    budget: {
+        total: Number,
+        expenses: [{
+            transactionTo: String,
+            status: {
+                type: String,
+                enum: ['PENDING', 'APPROVED', 'REJECTED'],
+                default: 'PENDING'
+            },
+            date: String,
+            amount: Number
+        }]
+    },
 }, { timestamps: true });
 
 

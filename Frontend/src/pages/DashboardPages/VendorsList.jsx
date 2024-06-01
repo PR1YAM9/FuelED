@@ -35,7 +35,7 @@ export default function VendorsList() {
           `https://fuel-ed-noyz.vercel.app/api/event/vendors/${user.events[0]}`
         );
         setVendors(response.data.vendors);
-        console.log(response.data.vendors);
+        // console.log(response.data.vendors);
         setLoader(false);
       } catch (error) {
         console.error("Error fetching guest list:", error);

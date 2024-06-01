@@ -60,7 +60,7 @@ export default function AddGuestModal({
         { guests }
       );
 
-      console.log(response.data);
+      // console.log(response.data);
       handleClose();
     } catch (error) {
       console.error("Error adding guests:", error);

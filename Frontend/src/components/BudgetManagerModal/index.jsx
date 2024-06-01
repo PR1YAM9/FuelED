@@ -7,7 +7,9 @@ import Modal from "@mui/material/Modal";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import TextField from "@mui/material/TextField";
+import { TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -20,25 +22,31 @@ const style = {
   p: 4,
 };
 
-export default function BudgetManagerModal({ handleClose, open, addExpense }) {
+export default function BudgetManagerModal({ handleClose, open, addExpense, eventId }) {
   const [transactionTo, setTransactionTo] = useState("");
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState("");
   const [date, setDate] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const expense = {
-      "Transaction To": transactionTo,
-      Amount: amount,
-      Status: status,
-      Date: date ? date.format("DD-MM-YYYY") : null,
+      transactionTo,
+      amount,
+      status,
+      date
     };
-    addExpense(expense);
-    setTransactionTo("");
-    setAmount("");
-    setStatus("");
-    setDate(null);
+    try {
+      await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/addExpense/${eventId}`, expense);
+      addExpense(expense);
+      setTransactionTo("");
+      setAmount("");
+      setStatus("");
+      setDate(null);
+      handleClose();
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
   };
 
   return (
@@ -99,32 +107,27 @@ export default function BudgetManagerModal({ handleClose, open, addExpense }) {
               },
             }}
           />
-          <TextField
-            sx={{
-              mb: 3,
-            }}
-            margin="normal"
-            required
-            fullWidth
-            id="status"
-            label="Status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            InputProps={{
-              sx: {
+          <FormControl fullWidth margin="normal" required>
+            <InputLabel id="status-label" sx={{ "&.Mui-focused": { color: "#C3A8E1" } }}>
+              Status
+            </InputLabel>
+            <Select
+              labelId="status-label"
+              id="status"
+              value={status}
+              label="Status"
+              onChange={(e) => setStatus(e.target.value)}
+              sx={{
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                   borderColor: "#C3A8E1",
                 },
-              },
-            }}
-            InputLabelProps={{
-              sx: {
-                "&.Mui-focused": {
-                  color: "#C3A8E1",
-                },
-              },
-            }}
-          />
+              }}
+            >
+              <MenuItem value="PENDING">PENDING</MenuItem>
+              <MenuItem value="APPROVED">APPROVED</MenuItem>
+              <MenuItem value="REJECTED">REJECTED</MenuItem>
+            </Select>
+          </FormControl>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Date"
