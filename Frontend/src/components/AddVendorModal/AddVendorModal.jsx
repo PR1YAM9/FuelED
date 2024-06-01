@@ -55,14 +55,14 @@ const AddVendorModal = ({ open, handleClose, formData, setFormData }) => {
         { vendors: [vendorData] }
       );
 
-      console.log(response.data);
+      // console.log(response.data);
       handleClose();
     } catch (error) {
       console.error("Error adding vendor:", error);
     }
   };
 
-  console.log(formData );
+  // console.log(formData );
   return (
     <div>
       <Modal

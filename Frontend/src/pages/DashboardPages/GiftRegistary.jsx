@@ -20,7 +20,7 @@ export default function GiftRegistary() {
         const res = await axios.get(
           `https://fuel-ed-noyz.vercel.app/api/event/showgifts/${user.events[0]}`
         );
-        console.log(res.data);
+        // console.log(res.data);
         setGifts(res.data.gifts);
         setLoader(false);
       } catch (error) {
@@ -30,7 +30,7 @@ export default function GiftRegistary() {
     };
     getGifts();
   }, [user]);
-  console.log(gifts);
+  // console.log(gifts);
 
   return (
     <div>

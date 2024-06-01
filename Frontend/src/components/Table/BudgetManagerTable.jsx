@@ -14,10 +14,10 @@ export default function BudgetManagerTable({ data }) {
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
-            <td data-label="Transaction To">{item["Transaction To"]}</td>
-            <td data-label="Amount">{item.Amount}</td>
-            <td data-label="Status">{item.Status}</td>
-            <td data-label="Date">{item.Date}</td>
+            <td data-label="Transaction To">{item.transactionTo}</td>
+            <td data-label="Amount">{item.amount}</td>
+            <td data-label="Status">{item.status}</td>
+            <td data-label="Date">{item.date ? item.date.toString() : ""}</td>
           </tr>
         ))}
       </tbody>

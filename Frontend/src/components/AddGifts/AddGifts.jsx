@@ -43,7 +43,7 @@ const AddGifts = () => {
         `https://fuel-ed-noyz.vercel.app/api/event/giftregister/${eventId}`,
         giftData
       );
-      console.log("Gift registered successfully:", response.data);
+      // console.log("Gift registered successfully:", response.data);
       setGiftName("");
       setGiftLink("");
       handleClose();
