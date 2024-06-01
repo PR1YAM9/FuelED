@@ -1,8 +1,8 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import "./login.css";
 import { loginCall } from "../../ApiCalls";
 import { AuthContext } from "../../context/AuthContext";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,24 +11,38 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 
 const Login = () => {
   const email = useRef();
   const password = useRef();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const { user, isFetching, error, dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const response = await loginCall(
+    setLoading(true);
+    setErrorMsg("");
+    try {
+      const response = await loginCall(
         { email: email.current.value, password: password.current.value },
         dispatch
-    );
-    if (response && !response.error) {
+      );
+      if (response && !response.error) {
         navigate("/dashboard");
+      } else {
+        setErrorMsg(response.error.response.data.error || "Failed to log in. Please try again.");
+      }
+    } catch (error) {
+      setErrorMsg("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
-};
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -97,6 +111,11 @@ const Login = () => {
               },
             }}
           />
+          {errorMsg && (
+            <Alert severity="error" sx={{ width: '100%', mt: 2 }}>
+              {errorMsg}
+            </Alert>
+          )}
           <Button
             type="submit"
             fullWidth
@@ -112,8 +131,9 @@ const Login = () => {
               color: "white",
               mt: 2,
             }}
+            disabled={loading}
           >
-            Sign In
+            {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Sign In'}
           </Button>
           <Grid container>
             <Grid item>

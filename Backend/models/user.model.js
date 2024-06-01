@@ -51,6 +51,12 @@ const eventSchema = new mongoose.Schema({
     },
     startDateTime: Date,
     endDateTime: Date,
+    description: {
+        type: String,
+    },
+    coverPhoto: {
+        type: String, // URL or file path of the cover photo
+    },
     host: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

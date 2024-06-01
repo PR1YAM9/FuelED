@@ -14,6 +14,10 @@ export default function RsvpForm() {
   const [willAttendValue, setWillAttendValue] = useState("");
   const [plusOneValue, setPlusOneValue] = useState("");
   const [childrenValue, setChildrenValue] = useState("");
+  const [dietaryRestrictions, setDietaryRestrictions] = useState("");
+  const [allergies, setAllergies] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [numberOfChildren, setNumberOfChildren] = useState("");
 
   const handleWillAttendChange = (event) => {
     setWillAttendValue(event.target.value);
@@ -27,17 +31,36 @@ export default function RsvpForm() {
     setChildrenValue(event.target.value);
   };
 
+  const handleDietaryRestrictionsChange = (event) => {
+    setDietaryRestrictions(event.target.value);
+  };
+
+  const handleAllergiesChange = (event) => {
+    setAllergies(event.target.value);
+  };
+
+  const handleFullNameChange = (event) => {
+    setFullName(event.target.value);
+  };
+
+  const handleNumberOfChildrenChange = (event) => {
+    setNumberOfChildren(event.target.value);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const formData = {
+        fullName,
         willAttend: willAttendValue,
-        bringPlusOne: plusOneValue,
-        bringChildren: childrenValue,
+        plusOne: plusOneValue,
+        numberOfChildren,
+        dietaryRestrictions,
+        allergies,
       };
-
-      const response = await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/rsvp/${uniqueId}`, formData);
+// https://fuel-ed-noyz.vercel.app
+      const response = await axios.post(`/api/event/rsvp/${uniqueId}`, formData);
 
       if (response.status === 200) {
         console.log("RSVP submitted successfully");
@@ -75,7 +98,7 @@ export default function RsvpForm() {
           justifyContent: "center",
         }}
       >
-        we hope you can join us!
+        We hope you can join us!
       </Typography>
       <Box
         sx={{
@@ -91,11 +114,12 @@ export default function RsvpForm() {
             fontSize: { md: "20px", xs: "15px" },
           }}
         >
-          Please enter your full name :
+          Please enter your full name:
         </Typography>
         <TextField
-          id="outlined-basic"
-          label=""
+          id="full-name"
+          value={fullName}
+          onChange={handleFullNameChange}
           variant="outlined"
           sx={{
             width: "100%",
@@ -115,7 +139,7 @@ export default function RsvpForm() {
             fontSize: { md: "20px", xs: "15px" },
           }}
         >
-          Will we see you there ?
+          Will we see you there?
         </Typography>
         <RadioGroup
           value={willAttendValue}
@@ -156,7 +180,7 @@ export default function RsvpForm() {
             fontSize: { md: "20px", xs: "15px" },
           }}
         >
-          Will you be bringing a plus-one ?
+          Will you be bringing a plus-one?
         </Typography>
         <RadioGroup
           value={plusOneValue}
@@ -197,7 +221,7 @@ export default function RsvpForm() {
             fontSize: { md: "20px", xs: "15px" },
           }}
         >
-          Will you be bringing children ?
+          Will you be bringing children?
         </Typography>
         <RadioGroup
           value={childrenValue}
@@ -231,9 +255,52 @@ export default function RsvpForm() {
             label="No"
           />
         </RadioGroup>
+        {childrenValue === "yes" && (
+          <Box
+            sx={{
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "Imprima",
+                fontSize: { md: "20px", xs: "12px" },
+              }}
+            >
+              If yes, how many:
+            </Typography>
+            <TextField
+              id="number-of-children"
+              value={numberOfChildren}
+              onChange={handleNumberOfChildrenChange}
+              variant="outlined"
+              sx={{
+                width: "100%",
+                marginLeft: "10px",
+                marginBottom: "20px",
+                "& .MuiOutlinedInput-root": {
+                  "& input": {
+                    height: "20px",
+                    padding: "10px 14px",
+                  },
+                },
+              }}
+            />
+          </Box>
+        )}
+
+        <Typography
+          sx={{
+            fontFamily: "Imprima",
+            fontSize: { md: "20px", xs: "15px" },
+          }}
+        >
+          Do you have any dietary restrictions?
+        </Typography>
         <Box
           sx={{
             display: "flex",
+            marginTop: "10px",
           }}
         >
           <Typography
@@ -242,16 +309,15 @@ export default function RsvpForm() {
               fontSize: { md: "20px", xs: "12px" },
             }}
           >
-            If yes, how many :
+            If yes, please specify:
           </Typography>
           <TextField
-            id="outlined-basic"
-            label=""
+            id="dietary-restrictions"
+            value={dietaryRestrictions}
+            onChange={handleDietaryRestrictionsChange}
             variant="outlined"
             sx={{
-              width: "100%",
               marginLeft: "10px",
-              marginBottom: "20px",
               "& .MuiOutlinedInput-root": {
                 "& input": {
                   height: "20px",
@@ -266,9 +332,10 @@ export default function RsvpForm() {
           sx={{
             fontFamily: "Imprima",
             fontSize: { md: "20px", xs: "15px" },
+            marginTop: "20px"
           }}
         >
-          Do you have any dietary restrictions ?
+          Do you have any allergies?
         </Typography>
         <Box
           sx={{
@@ -282,12 +349,12 @@ export default function RsvpForm() {
               fontSize: { md: "20px", xs: "12px" },
             }}
           >
-            If yes, please specify :
+            If yes, please specify:
           </Typography>
-
           <TextField
-            id="outlined-basic"
-            label=""
+            id="allergies"
+            value={allergies}
+            onChange={handleAllergiesChange}
             variant="outlined"
             sx={{
               marginLeft: "10px",
@@ -300,6 +367,7 @@ export default function RsvpForm() {
             }}
           />
         </Box>
+
         <Button
           variant="contained"
           onClick={handleSubmit}

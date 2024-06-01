@@ -138,25 +138,29 @@ export default function SideBar() {
           padding: "15px 16px",
         }}
       >
-        <Button
-          variant="outlined"
-          sx={{
-            color: "white",
-            border: "1px solid white",
-            fontFamily: "Inconsolata",
-            fontSize: { md: "20px", xs: "15px" },
-            borderRadius: "30px",
-            padding: "5px 30px",
-            "&:hover": { backgroundColor: "#C3A8E1" },
-            mb: { md: "30px", xs: "15px" },
-            "&.Mui-disabled": {
-              background: "#C6D3BD",
+        {user.role === "HOST" && (
+          <Button
+            variant="outlined"
+            component={Link}
+            to="/createevent"
+            sx={{
               color: "white",
-            },
-          }}
-        >
-          Create Event
-        </Button>
+              border: "1px solid white",
+              fontFamily: "Inconsolata",
+              fontSize: { md: "20px", xs: "15px" },
+              borderRadius: "30px",
+              padding: "5px 30px",
+              "&:hover": { backgroundColor: "#C3A8E1" },
+              mb: { md: "30px", xs: "15px" },
+              "&.Mui-disabled": {
+                background: "#C6D3BD",
+                color: "white",
+              },
+            }}
+          >
+            Create Event
+          </Button>
+        )}
       </Box>
       <List>
         {filteredListItems.map(({ text, link }, index) => (

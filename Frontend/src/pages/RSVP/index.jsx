@@ -75,7 +75,6 @@ export default function RSVP() {
                 onClick={handleScrollToForm}
                 sx={{
                   backgroundColor: "#C3A8E1",
-                  color: "black",
                   fontFamily: "Imprima",
                   fontSize: { md: "29px", xs: "20px" },
                   borderRadius: "30px",

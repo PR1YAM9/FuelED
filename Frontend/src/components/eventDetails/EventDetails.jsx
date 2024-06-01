@@ -31,8 +31,10 @@ const EventDetails = () => {
       fetchEventDetails();
     }
   }, [user]);
+
   const formattedTime = new Date(eventDetails?.startDateTime).toLocaleString();
   const formattedEndTime = new Date(eventDetails?.endDateTime).toLocaleString();
+
   return (
     <Box
       sx={{
@@ -87,7 +89,7 @@ const EventDetails = () => {
             }}
           />
         </Box>
-      ) : (
+      ) : user.events[0] ? (
         <Stack
           direction="column"
           sx={{ mt: 5, justifyContent: "center", alignItems: "center" }}
@@ -110,7 +112,14 @@ const EventDetails = () => {
             }}
             label={eventDetails?.eventName}
           />
-
+          <Typography
+            variant="caption"
+            display="block"
+            sx={{ color: "#00000087" }}
+            gutterBottom
+          >
+            {eventDetails?.description}
+          </Typography>
           <Typography
             variant="caption"
             display="block"
@@ -187,6 +196,19 @@ const EventDetails = () => {
             label="Click here"
           />
         </Stack>
+      ) : (
+        <Typography
+          variant="h6"
+          sx={{
+            mt: 5,
+            color: "#E09BAC",
+            display: "flex",
+            justifyContent: "left",
+            fontFamily: "Inconsolata",
+          }}
+        >
+          Create an event to view details
+        </Typography>
       )}
     </Box>
   );

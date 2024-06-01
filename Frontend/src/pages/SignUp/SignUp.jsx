@@ -1,21 +1,27 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./SignUp.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 const Register = () => {
   const navigate = useNavigate();
   const username = useRef();
   const email = useRef();
   const password = useRef();
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleClick = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setErrorMsg("");
     const user = {
       name: username.current.value,
       email: email.current.value,
@@ -29,8 +35,16 @@ const Register = () => {
       navigate("/login");
     } catch (error) {
       console.log(error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMsg(error.response.data.message); // Fix typo here
+      } else {
+        setErrorMsg("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   return (
     <Box
@@ -46,32 +60,20 @@ const Register = () => {
       <Avatar sx={{ m: 1, bgcolor: "#E09BAC" }}>
         <LockOutlinedIcon />
       </Avatar>
+      <Typography component="h1" variant="h5">
+          Sign Up
+        </Typography>
       <TextField
         margin="normal"
         required
         fullWidth
-        id="email"
+        id="username"
         label="Username"
-        name="email"
-        autoComplete="email"
+        name="username"
+        autoComplete="username"
         autoFocus
         inputRef={username}
-        InputProps={{
-          sx: {
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#C3A8E1",
-            },
-          },
-        }}
-        InputLabelProps={{
-          sx: {
-            "&.Mui-focused": {
-              color: "#C3A8E1",
-            },
-          },
-        }}
       />
-
       <TextField
         margin="normal"
         required
@@ -80,24 +82,8 @@ const Register = () => {
         label="Email Address"
         name="email"
         autoComplete="email"
-        autoFocus
         inputRef={email}
-        InputProps={{
-          sx: {
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#C3A8E1",
-            },
-          },
-        }}
-        InputLabelProps={{
-          sx: {
-            "&.Mui-focused": {
-              color: "#C3A8E1",
-            },
-          },
-        }}
       />
-
       <TextField
         margin="normal"
         required
@@ -105,58 +91,33 @@ const Register = () => {
         id="password"
         label="Password"
         name="password"
-        autoComplete="password"
-        autoFocus
+        type="password"
+        autoComplete="current-password"
         inputRef={password}
-        InputProps={{
-          sx: {
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#C3A8E1",
-            },
-          },
-        }}
-        InputLabelProps={{
-          sx: {
-            "&.Mui-focused": {
-              color: "#C3A8E1",
-            },
-          },
-        }}
       />
+      {errorMsg && (
+        <Alert severity="error" sx={{ width: '100%', mt: 2 }}>
+          {errorMsg}
+        </Alert>
+      )}
       <Button
         fullWidth
         variant="contained"
         sx={{
-          backgroundColor: "#C3A8E1",
-          color: "black",
-          fontFamily: "Imprima",
-          fontSize: { md: "20px", xs: "15px" },
-          borderRadius: "30px",
-          padding: "5px 30px",
-          "&:hover": { backgroundColor: "#C3A8E1" },
-          mb: { md: "30px", xs: "15px" },
-          color: "white",
           mt: 2,
         }}
+        disabled={loading}
         onClick={handleClick}
       >
-        Sign Up
+        {loading ? <CircularProgress size={24} /> : "Sign Up"}
       </Button>
       <Button
         fullWidth
         variant="contained"
         sx={{
-          backgroundColor: "#C3A8E1",
-          color: "black",
-          fontFamily: "Imprima",
-          fontSize: { md: "20px", xs: "15px" },
-          borderRadius: "30px",
-          padding: "5px 30px",
-          "&:hover": { backgroundColor: "#C3A8E1" },
-          mb: { md: "30px", xs: "15px" },
-          color: "white",
           mt: 2,
         }}
+        onClick={() => navigate("/login")}
       >
         Log into Account
       </Button>

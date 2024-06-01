@@ -162,6 +162,9 @@ export default function AddGuestModal({
             }
             label="+1"
           />
+          <Typography variant="caption" display="block" gutterBottom>
+              *an email will be sent to the guest with the event details and RSVP
+          </Typography>
           <Box
             sx={{
               display: "flex",

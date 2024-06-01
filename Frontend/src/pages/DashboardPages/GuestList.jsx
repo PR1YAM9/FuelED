@@ -42,7 +42,7 @@ export default function GuestList() {
   }, [user.events]);
 
   console.log(guests);
-  const columns = ["Name", "phone", "Email"];
+  const columns = ["Name", "phone", "Email","rsvp","Plus One","number of Children","dietary restrictions"];
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
@@ -9,6 +9,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const CreateEvent = () => {
     const navigate = useNavigate();
@@ -17,7 +18,8 @@ const CreateEvent = () => {
     const [endDateTime, setEndDateTime] = useState(null);
     const [venueAddress, setVenueAddress] = useState("");
     const [venueMapLink, setVenueMapLink] = useState("");
-
+    const [description, setDescription] = useState("");
+    const {user} = useContext(AuthContext);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -31,8 +33,9 @@ const CreateEvent = () => {
             address: venueAddress,
             mapLink: venueMapLink,
             },
+            description,
+            host: user._id
         };
-
         const response = await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/create`, formData);
 
         if (response.status === 200) {
@@ -75,13 +78,30 @@ const CreateEvent = () => {
               fontSize: { md: "20px", xs: "15px" },
             }}
           >
-            Please enter the event name:
+            Please enter the event details:
           </Typography>
           <TextField
             id="eventName"
             label="Event Name"
             value={eventName}
             onChange={(e) => setEventName(e.target.value)}
+            variant="outlined"
+            sx={{
+              width: "100%",
+              marginBottom: "20px",
+              "& .MuiOutlinedInput-root": {
+                "& input": {
+                  height: "20px",
+                //   padding: "10px 14px",
+                },
+              },
+            }}
+          />
+          <TextField
+            id="description"
+            label="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             variant="outlined"
             sx={{
               width: "100%",

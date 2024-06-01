@@ -16,8 +16,14 @@ export default function Table({ columns, data }) {
         return "serviceType";
       case "company name":
         return "companyName";
-      case "+1":
+      case "plus one":
         return "plusOne";
+      case "number of children":
+        return "numberOfChildren";
+      case "rsvp":
+        return "rsvp";   
+      case "dietary restrictions":
+        return "dietaryRestrictions";
       default:
         return column.toLowerCase().replace(/ /g, "");
     }
