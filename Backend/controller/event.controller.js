@@ -22,7 +22,7 @@ export const getGuestList = async (req, res, next) => {
 
 export const getHostsEvent = async (req, res, next) => {
     try {
-        const user = req.user;
+        const user = req.body.user;
         const events = await Event.find({ host: user._id });
 
         res.status(200).json({ events });
@@ -51,7 +51,8 @@ export const getEventDetails = async (req, res, next) => {
 
 export const createEvent = async (req, res, next) => {
     try {
-        const { eventName, startDateTime, endDateTime, venue, } = req.body;
+        const host= req.body.user;
+        const { eventName, startDateTime, endDateTime, venue, description } = req.body;
 
         if (!eventName || !startDateTime || !endDateTime || !venue) {
             return res.status(400).json({ error: 'Incomplete event data' });
@@ -62,14 +63,15 @@ export const createEvent = async (req, res, next) => {
             startDateTime,
             endDateTime,
             venue,
-            host: req.user._id
+            description,
+            host: host
         });
 
         await newEvent.save();
 
-        await User.findByIdAndUpdate(req.user._id, { $push: { events: newEvent._id } });
+        await User.findByIdAndUpdate(host, { $push: { events: newEvent._id } });
 
-        res.status(201).json({ message: 'Event created successfully', event: newEvent });
+        res.status(200).json({ message: 'Event created successfully', event: newEvent });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
@@ -180,10 +182,15 @@ export const rsvpPost = async (req, res) => {
         const { uniqueId } = req.params;
         const { 
             willAttend,
-            plusOne,
-            numberOfChildren,
-            dietaryRestrictions,
+            plusOne = 'no', // Default to 'no' if not provided
+            numberOfChildren = 0, // Default to 0 if not provided
+            dietaryRestrictions = ''
         } = req.body;
+
+        // Validate required fields
+        if (!willAttend) {
+            return res.status(400).send('WillAttend field is required');
+        }
 
         // Find the guest by uniqueId and role
         const guest = await User.findOne({ uniqueId, role: 'GUEST' });
@@ -193,19 +200,21 @@ export const rsvpPost = async (req, res) => {
         }
 
         // Update the guest object with RSVP details
-        if (willAttend === 'yes') {
-            guest.rsvp = 'ACCEPTED';
-        } else {
-            guest.rsvp = 'DECLINED';
-        }
+        guest.rsvp = willAttend === 'yes' ? 'ACCEPTED' : 'DECLINED';
         guest.plusOne = plusOne;
         guest.numberOfChildren = numberOfChildren;
         guest.dietaryRestrictions = dietaryRestrictions;
 
+        // Generate guestPass (only if the guest will attend)
+        if (willAttend === 'yes') {
+            const guestPass = guest.name.toLowerCase().split(' ').join('') + '123';
+            // Note: Ideally, passwords should be hashed before saving.
+        }
+
         // Save the updated guest object
         await guest.save();
 
-        // If the RSVP is accepted, send user credentials
+        // Send email only if the guest is attending
         if (willAttend === 'yes') {
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
@@ -219,13 +228,12 @@ export const rsvpPost = async (req, res) => {
                 from: '"Event Manager" <priyam9maini@gmail.com>',
                 to: guest.email,
                 subject: 'Your Event Credentials',
-                text: `Hello ${guest.name},\n\nYour RSVP has been accepted. Here are your credentials:\nUsername: ${guest.email}\nPassword: ${guest.password}, use them to login at \n  https://party-pals.vercel.app \n\nThank you!`
+                text: `Hello ${guest.name},\n\nYour RSVP has been accepted. Here are your credentials:\nUsername: ${guest.email}\nPassword: ${guestPass}, use them to login at \n  https://party-pals.vercel.app \n\nThank you!`
             };
 
             await transporter.sendMail(mailOptions);
         }
 
-        // Send a success response
         res.send('RSVP submitted successfully');
     } catch (error) {
         console.error(error);
@@ -262,7 +270,13 @@ export const giftRegister = async (req, res) => {
 export const showGifts = async (req, res) => {
     try {
         const eventId = req.params.eventId;
-        const event = await Event.findById(eventId);
+        const event = await Event.findById(eventId).populate({
+            path: 'gifts',
+            populate: {
+                path: 'boughtBy',
+                select: 'name' // Only select the 'name' field of the boughtBy user
+            }
+        });
 
         if (!event) {
             return res.status(404).json({ error: 'Event not found' });
@@ -274,12 +288,11 @@ export const showGifts = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal server error');
     }
-
 };
 
 export const selectGift = async (req, res) => {
     try {
-        const guestId = req.user._id;
+        const guestId = req.body.user;
         const { giftId ,eventId} = req.body;
         const event = await Event.findById(eventId);
 
