@@ -16,8 +16,6 @@ import { Link, useParams, useLocation } from "react-router-dom";
 
 export default function SideBar() {
   const { user } = React.useContext(AuthContext);
-  console.log(user);
-
   const [state, setState] = useState({
     left: false,
   });
