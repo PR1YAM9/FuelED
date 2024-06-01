@@ -94,7 +94,7 @@ export const registerVendor = async (req,res,next)=>{
 export const getUser = async (req, res) => {
     try {
         const userId = req.params.userId;
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).populate('events');
         res.status(200).json({user});
     }
     catch (error) {

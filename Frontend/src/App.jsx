@@ -21,6 +21,7 @@ import GiftRegistary from "./pages/DashboardPages/GiftRegistary";
 import GuestList from "./pages/DashboardPages/GuestList";
 import VendorsList from "./pages/DashboardPages/VendorsList";
 import Dashboard from "./pages/DashboardPages/dashboard";
+import Profile from "./pages/Profile/Profile";
 function App() {
   const { user } = useContext(AuthContext);
 
@@ -44,6 +45,8 @@ function App() {
         <Route path="/dashboard/VendorsList" element={<VendorsList />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/createevent" element={<CreateEvent />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

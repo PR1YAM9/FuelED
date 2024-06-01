@@ -18,7 +18,7 @@ export default function GiftRegistary() {
 
       try {
         const res = await axios.get(
-          `/api/event/showgifts/${user.events[0]}`
+          `https://fuel-ed-noyz.vercel.app/api/event/showgifts/${user.events[0]}`
         );
         console.log(res.data);
         setGifts(res.data.gifts);
