@@ -214,11 +214,7 @@ export const rsvpPost = async (req, res) => {
         guest.numberOfChildren = numberOfChildren;
         guest.dietaryRestrictions = dietaryRestrictions;
 
-        // Generate guestPass (only if the guest will attend)
-        if (willAttend === 'yes') {
-            const guestPass = guest.name.toLowerCase().split(' ').join('') + '123';
-            // Note: Ideally, passwords should be hashed before saving.
-        }
+        const guestPass = guest.name.toLowerCase().split(' ').join('') + '123';
 
         // Save the updated guest object
         await guest.save();
