@@ -3,18 +3,20 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Footer({ bgColor }) {
+  const navigate = useNavigate();
 
-  const {user} = useContext(AuthContext);
- 
+  const { user } = useContext(AuthContext);
+
   const handleClick = () => {
     if (user) {
       navigate("/dashboard");
     } else {
       navigate("/login");
     }
-  }
+  };
   return (
     <Box
       sx={{
@@ -72,6 +74,7 @@ export default function Footer({ bgColor }) {
             Ready to Plan a party ?
           </Typography>
           <Button
+            onClick={handleClick}
             sx={{
               backgroundColor: "white",
               color: bgColor,

@@ -172,8 +172,15 @@ const Messanger = () => {
                     </div>
                   </>
                 ) : (
-                  <Typography component="h1" variant="h5" sx={{textAlign:"center"}}>
-                    Open a conversation to start a chat.
+                  <Typography
+                    variant="h7"
+                    sx={{
+                      textAlign: "center",
+                      mt: 3,
+                      fontFamily: "Inconsolata",
+                    }}
+                  >
+                    *Open a conversation to start a chat
                   </Typography>
                 )}
               </div>

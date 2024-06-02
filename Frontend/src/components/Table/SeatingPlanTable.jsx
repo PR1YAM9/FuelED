@@ -109,7 +109,7 @@ export default function SeatingPlanTable({
       </thead>
       <tbody>
         {Array.from({ length: numberOfRows }).map((_, rowIndex) => (
-          <tr key={rowIndex}>
+          <tr key={rowIndex} className="tableSeatingPlanTr">
             {columns.map((column, colIndex) => (
               <td
                 key={colIndex}

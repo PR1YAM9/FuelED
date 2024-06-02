@@ -1,7 +1,7 @@
 table {
   border: 1px solid #ccc;
   border-collapse: collapse;
-  margin-left: 5px;
+  margin-left: 16px;
   padding: 0px;
   table-layout: fixed;
 }
@@ -11,7 +11,7 @@ table caption {
   margin: 0.5em 0 0.75em;
 }
 
-table tr {
+.registryTableTr {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   width: 100%;
