@@ -35,6 +35,8 @@ const userSchema = new mongoose.Schema({
     }],
     uniqueId: {
         type: String,
+        unique: true,
+        sparse: true,
     },
     plusOne: String,
     numberOfChildren: Number,
