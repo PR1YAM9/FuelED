@@ -43,7 +43,7 @@ export default function SideBar() {
       case "BudgetManager":
         return "Budget Manager";
       case "SeatingPlan":
-        return "Seating Place";
+        return "Seating Plan";
       case "GiftRegistary":
         return "Gift Registry";
       case "Calender":
@@ -78,7 +78,7 @@ export default function SideBar() {
     { text: "Vendors List", link: "/dashboard/VendorsList", roles: ["HOST"] },
     { text: "Messenger", link: "/messenger", roles: ["HOST", "VENDOR"] },
     { text: "Budget Manager", link: "/dashboard/BudgetManager", roles: ["HOST"] },
-    { text: "Seating Place", link: "/dashboard/SeatingPlan", roles: ["HOST"] },
+    { text: "Seating Plan", link: "/dashboard/SeatingPlan", roles: ["HOST"] },
     { text: "Gift Registry", link: "/dashboard/GiftRegistary", roles: ["HOST", "GUEST"] },
     { text: "Calendar", link: "/dashboard/Calender", roles: ["HOST"] },
     { text: "Announcements", link: "/dashboard/announcements", roles: ["HOST", "GUEST"] },

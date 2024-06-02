@@ -1,3 +1,5 @@
+// AuthContext.js
+
 import React, { createContext, useEffect, useReducer } from "react";
 import AuthReducer from "./AuthReducer";
 
@@ -13,6 +15,7 @@ export const AuthContext = createContext({
     isFetching: false,
     error: false,
     events: null,
+    dispatch: () => {}, // Add dispatch to context
 });
 
 export const AuthContextProvider = ({ children }) => {
@@ -30,6 +33,7 @@ export const AuthContextProvider = ({ children }) => {
                 isFetching: state.isFetching,
                 error: state.error,
                 events: state.user ? state.user.events : null,
+                dispatch, 
             }}
         >
             {children}
