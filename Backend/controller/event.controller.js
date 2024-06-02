@@ -51,7 +51,7 @@ export const getEventDetails = async (req, res, next) => {
 
 export const createEvent = async (req, res, next) => {
     try {
-        const host= req.body.user;
+        const host = req.body.user;
         const { eventName, startDateTime, endDateTime, venue, description } = req.body;
 
         if (!eventName || !startDateTime || !endDateTime || !venue) {
@@ -69,7 +69,18 @@ export const createEvent = async (req, res, next) => {
 
         await newEvent.save();
 
-        await User.findByIdAndUpdate(host, { $push: { events: newEvent._id } });
+        // Find the user by ID
+        const user = await User.findById(host);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Push the event ID into the user's events array
+        user.events.push(newEvent._id);
+
+        // Save the user document
+        await user.save();
 
         res.status(200).json({ message: 'Event created successfully', event: newEvent });
     } catch (error) {
@@ -77,6 +88,7 @@ export const createEvent = async (req, res, next) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
 
 export const addGuests = async (req, res, next) => {
     try {
