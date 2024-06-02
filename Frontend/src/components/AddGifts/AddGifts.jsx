@@ -20,7 +20,7 @@ const AddGifts = () => {
   const [open, setOpen] = useState(false);
   const [giftName, setGiftName] = useState("");
   const [giftLink, setGiftLink] = useState("");
-  const eventId = user.events[1]; // Hardcoded event ID for now
+  const eventId = user.events[0]; // Hardcoded event ID for now
 
   const handleOpen = () => {
     setOpen(true);
