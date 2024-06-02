@@ -43,7 +43,7 @@ const AddGifts = () => {
         `https://fuel-ed-noyz.vercel.app/api/event/giftregister/${eventId}`,
         giftData
       );
-      // console.log("Gift registered successfully:", response.data);
+      console.log("Gift registered successfully:", response.data);
       setGiftName("");
       setGiftLink("");
       handleClose();
@@ -127,7 +127,6 @@ const AddGifts = () => {
             <Box mt={2}>
               <Button
                 type="submit"
-                onClick={handleClose}
                 variant="contained"
                 sx={{
                   backgroundColor: "#C3A8E1",
