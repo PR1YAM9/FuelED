@@ -8,12 +8,17 @@ import messagesRouter from './routes/messages.router.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import announcementRoute from "./routes/annoucements.js";
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 dotenv.config();
+
+app.use(cors({
+    origin: 'https://party-pals.vercel.app'
+}));
 
 mongoose.connect(process.env.MONGO_URI).then(()=>{
     console.log("connected to db");
