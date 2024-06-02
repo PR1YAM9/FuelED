@@ -6,7 +6,7 @@ const TableRegistry = ({ gifts }) => {
     <>
       <table style={{ marginTop: "30px" }}>
         <thead>
-          <tr>
+          <tr className="registryTableTr">
             <th scope="col">Gift Name</th>
             <th scope="col">Link</th>
             <th scope="col">Status</th>

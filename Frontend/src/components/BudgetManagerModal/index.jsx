@@ -7,7 +7,13 @@ import Modal from "@mui/material/Modal";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 
 import axios from "axios";
 
@@ -22,7 +28,12 @@ const style = {
   p: 4,
 };
 
-export default function BudgetManagerModal({ handleClose, open, addExpense, eventId }) {
+export default function BudgetManagerModal({
+  handleClose,
+  open,
+  addExpense,
+  eventId,
+}) {
   const [transactionTo, setTransactionTo] = useState("");
   const [amount, setAmount] = useState("");
   const [status, setStatus] = useState("");
@@ -34,10 +45,10 @@ export default function BudgetManagerModal({ handleClose, open, addExpense, even
       transactionTo,
       amount,
       status,
-      date
+      date,
     };
     try {
-      await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/addExpense/${eventId}`, expense);
+      await axios.post(`/api/event/addExpense/${eventId}`, expense);
       addExpense(expense);
       setTransactionTo("");
       setAmount("");
@@ -46,6 +57,7 @@ export default function BudgetManagerModal({ handleClose, open, addExpense, even
       handleClose();
     } catch (error) {
       console.error("Error adding expense:", error);
+      handleClose();
     }
   };
 
@@ -107,8 +119,18 @@ export default function BudgetManagerModal({ handleClose, open, addExpense, even
               },
             }}
           />
-          <FormControl fullWidth margin="normal" required>
-            <InputLabel id="status-label" sx={{ "&.Mui-focused": { color: "#C3A8E1" } }}>
+          <FormControl
+            fullWidth
+            margin="normal"
+            required
+            sx={{
+              mb: 3,
+            }}
+          >
+            <InputLabel
+              id="status-label"
+              sx={{ "&.Mui-focused": { color: "#C3A8E1" } }}
+            >
               Status
             </InputLabel>
             <Select
@@ -124,8 +146,8 @@ export default function BudgetManagerModal({ handleClose, open, addExpense, even
               }}
             >
               <MenuItem value="PENDING">PENDING</MenuItem>
-              <MenuItem value="APPROVED">APPROVED</MenuItem>
-              <MenuItem value="REJECTED">REJECTED</MenuItem>
+              <MenuItem value="PAID">PAID</MenuItem>
+              <MenuItem value="DECLINED">DECLINED</MenuItem>
             </Select>
           </FormControl>
           <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -1,9 +1,15 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import SideBar from "../../../components/SideBar";
-import { Typography, Box, CircularProgress, TextField, Button } from "@mui/material";
+import {
+  Typography,
+  Box,
+  CircularProgress,
+  TextField,
+  Button,
+} from "@mui/material";
 import { AuthContext } from "../../../context/AuthContext";
-import Message from "../../../components/message/Message"; 
+import Message from "../../../components/message/Message";
 import "./annoucement.css";
 
 export default function Announcements() {
@@ -16,7 +22,9 @@ export default function Announcements() {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const res = await axios.get(`https://fuel-ed-noyz.vercel.app/api/announcements/${user.events[0]}`);
+        const res = await axios.get(
+          `https://fuel-ed-noyz.vercel.app/api/announcements/${user.events[0]}`
+        );
         setAnnouncements(res.data);
         setLoading(false);
       } catch (err) {
@@ -29,11 +37,14 @@ export default function Announcements() {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post(`https://fuel-ed-noyz.vercel.app/api/announcements/${user.events[0]}`, {
-        eventId: user.events[0],
-        text: newAnnouncement,
-        createdBy: user._id,
-      });
+      const res = await axios.post(
+        `https://fuel-ed-noyz.vercel.app/api/announcements/${user.events[0]}`,
+        {
+          eventId: user.events[0],
+          text: newAnnouncement,
+          createdBy: user._id,
+        }
+      );
       setAnnouncements([...announcements, res.data]);
       setNewAnnouncement("");
       scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -85,13 +96,23 @@ export default function Announcements() {
                 <div className="chatBoxTop">
                   {announcements.map((announcement) => (
                     <div key={announcement._id} ref={scrollRef}>
-                      <Message message={announcement} own={announcement.createdBy === user._id} />
+                      <Message
+                        message={announcement}
+                        own={announcement.createdBy === user._id}
+                      />
                     </div>
                   ))}
                 </div>
                 {user.role === "HOST" && (
                   <div className="chatBoxBottom">
-                    <TextField
+                    <input
+                      type="text"
+                      placeholder="Write an announcement"
+                      onChange={(e) => setNewAnnouncement(e.target.value)}
+                      value={newAnnouncement}
+                      className="chatMessageInput"
+                    />
+                    {/* <TextField
                       type="text"
                       placeholder="Write an announcement"
                       onChange={(e) => setNewAnnouncement(e.target.value)}
@@ -99,8 +120,18 @@ export default function Announcements() {
                       fullWidth
                       multiline
                       rows={4}
-                      sx={{ mb: 2 , width: "278px" , fontFamily: "Imprima" ,padding: "10px", borderRadius: "20px", backgroundColor: "#f7e3e382", border: "0.5px solid white" , outline: "none"}}
-                    />
+                      sx={{
+                        mb: 2,
+                        width: "278px",
+                        fontFamily: "Imprima",
+                        padding: "10px",
+                        borderRadius: "20px",
+                        backgroundColor: "#f7e3e382",
+                        // border: "0.5px solid white",
+                        outline: "none",
+                        height: "50px",
+                      }}
+                    /> */}
                     <Button
                       variant="contained"
                       onClick={handleSubmit}
@@ -109,7 +140,7 @@ export default function Announcements() {
                         fontFamily: "Imprima",
                         fontSize: { md: "20px", xs: "15px" },
                         borderRadius: "30px",
-                        padding: "10px",
+                        padding: "3px 10px",
                         "&:hover": { backgroundColor: "#C3A8E1" },
                         color: "white",
                         width: "90px",

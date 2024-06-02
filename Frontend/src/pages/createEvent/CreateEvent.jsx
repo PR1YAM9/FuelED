@@ -12,61 +12,65 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 const CreateEvent = () => {
-    const navigate = useNavigate();
-    const [eventName, setEventName] = useState("");
-    const [startDateTime, setStartDateTime] = useState(null);
-    const [endDateTime, setEndDateTime] = useState(null);
-    const [venueAddress, setVenueAddress] = useState("");
-    const [venueMapLink, setVenueMapLink] = useState("");
-    const [description, setDescription] = useState("");
-    const {user} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [eventName, setEventName] = useState("");
+  const [startDateTime, setStartDateTime] = useState(null);
+  const [endDateTime, setEndDateTime] = useState(null);
+  const [venueAddress, setVenueAddress] = useState("");
+  const [venueMapLink, setVenueMapLink] = useState("");
+  const [description, setDescription] = useState("");
+  const { user } = useContext(AuthContext);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        try {
-        const formData = {
-            eventName,
-            startDateTime,
-            endDateTime,
-            venue: {
-            address: venueAddress,
-            mapLink: venueMapLink,
-            },
-            description,
-            host: user._id
-        };
-        const response = await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/create`, formData);
+    try {
+      const formData = {
+        eventName,
+        startDateTime,
+        endDateTime,
+        venue: {
+          address: venueAddress,
+          mapLink: venueMapLink,
+        },
+        description,
+        host: user._id,
+      };
+      const response = await axios.post(
+        `https://fuel-ed-noyz.vercel.app/api/event/create`,
+        formData
+      );
 
-        if (response.status === 200) {
-            console.log("Event created successfully");
-            navigate("/dashboard");
-        } else {
-            console.error("Failed to create event");
-        }
-        } catch (error) {
-        console.error("Error creating event:", error);
-        }
-    };
+      if (response.status === 200) {
+        console.log("Event created successfully");
+        navigate("/dashboard");
+      } else {
+        console.error("Failed to create event");
+      }
+    } catch (error) {
+      console.error("Error creating event:", error);
+    }
+  };
 
   return (
     <>
       <SideBar />
       <Box>
         <Typography
-          variant="h3"
+          variant="h4"
           sx={{
             color: "#E09BAC",
             display: "flex",
             justifyContent: "center",
             fontFamily: "Inconsolata",
+            mt: 3,
           }}
         >
           Create Event
         </Typography>
         <Box
           sx={{
-            border: "2px solid white",
+            border: "2px solid #E09BAC",
             padding: "20px",
             fontFamily: "Imprima",
             margin: { md: "20px 30%", xs: "20px 5%" },
@@ -92,7 +96,21 @@ const CreateEvent = () => {
               "& .MuiOutlinedInput-root": {
                 "& input": {
                   height: "20px",
-                //   padding: "10px 14px",
+                  //   padding: "10px 14px",
+                },
+              },
+            }}
+            InputProps={{
+              sx: {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#C3A8E1",
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: "#C3A8E1",
                 },
               },
             }}
@@ -109,7 +127,21 @@ const CreateEvent = () => {
               "& .MuiOutlinedInput-root": {
                 "& input": {
                   height: "20px",
-                //   padding: "10px 14px",
+                  //   padding: "10px 14px",
+                },
+              },
+            }}
+            InputProps={{
+              sx: {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#C3A8E1",
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: "#C3A8E1",
                 },
               },
             }}
@@ -144,7 +176,21 @@ const CreateEvent = () => {
               "& .MuiOutlinedInput-root": {
                 "& input": {
                   height: "20px",
-                //   padding: "10px 14px",
+                  //   padding: "10px 14px",
+                },
+              },
+            }}
+            InputProps={{
+              sx: {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#C3A8E1",
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: "#C3A8E1",
                 },
               },
             }}
@@ -162,7 +208,21 @@ const CreateEvent = () => {
               "& .MuiOutlinedInput-root": {
                 "& input": {
                   height: "20px",
-                //   padding: "10px 14px",
+                  //   padding: "10px 14px",
+                },
+              },
+            }}
+            InputProps={{
+              sx: {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#C3A8E1",
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: "#C3A8E1",
                 },
               },
             }}

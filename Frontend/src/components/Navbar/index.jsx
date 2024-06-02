@@ -28,7 +28,7 @@ export default function Navbar({ bgColor }) {
   const handleLogout = () => {
     logoutCall(dispatch);
     handleMenuClose();
-    navigate("/");
+    navigate("/login");
   };
 
   const menuItems = user

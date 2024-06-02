@@ -196,6 +196,9 @@ const AddVendorModal = ({ open, handleClose, formData, setFormData }) => {
               },
             }}
           />
+          <Typography variant="caption" display="block" gutterBottom>
+            *an email will be sent to the guest with the event details and RSVP
+          </Typography>
           <Box
             sx={{
               display: "flex",
@@ -241,6 +244,6 @@ const AddVendorModal = ({ open, handleClose, formData, setFormData }) => {
       </Modal>
     </div>
   );
-}
+};
 
 export default AddVendorModal;

@@ -12,8 +12,7 @@ table caption {
   margin: 0.5em 0 0.75em;
 }
 
-table tr {
-  background-color: #f8f8f8;
+.tableSeatingPlanTr {
   border: 1px solid #ddd;
   width: 95%;
 }
