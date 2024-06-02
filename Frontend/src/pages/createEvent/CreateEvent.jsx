@@ -19,7 +19,7 @@ const CreateEvent = () => {
   const [venueAddress, setVenueAddress] = useState("");
   const [venueMapLink, setVenueMapLink] = useState("");
   const [description, setDescription] = useState("");
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -43,6 +43,10 @@ const CreateEvent = () => {
 
       if (response.status === 200) {
         console.log("Event created successfully");
+        // Update user in local storage
+        const updatedUser = { ...user, events: [...user.events, response.data.event._id] };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser); // Update user in context
         navigate("/dashboard");
       } else {
         console.error("Failed to create event");
@@ -237,7 +241,7 @@ const CreateEvent = () => {
               borderRadius: "30px",
               padding: "0px 40px",
               "&:hover": {
-                backgroundColor: "#C3A8E1",
+                backgroundColor:"#C3A8E1",
               },
               mt: "30px",
               color: "white",
@@ -253,3 +257,4 @@ const CreateEvent = () => {
 };
 
 export default CreateEvent;
+
