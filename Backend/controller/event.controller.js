@@ -51,12 +51,9 @@ export const getEventDetails = async (req, res, next) => {
 
 export const createEvent = async (req, res, next) => {
     try {
-        const host = req.body.user;
+        const host = req.body.host;
         const { eventName, startDateTime, endDateTime, venue, description } = req.body;
 
-        if (!eventName || !startDateTime || !endDateTime || !venue) {
-            return res.status(400).json({ error: 'Incomplete event data' });
-        }
 
         const newEvent = new Event({
             eventName,
