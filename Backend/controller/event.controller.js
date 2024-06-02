@@ -530,7 +530,7 @@ export const addExpense = async (req, res) => {
 
         const newExpense = {
             transactionTo,
-            status: status || 'PENDING',  // Default to 'PENDING' if status is not provided
+            status: status || 'PENDING',  
             date ,
             amount
         };
