@@ -48,7 +48,7 @@ export default function BudgetManagerModal({
       date,
     };
     try {
-      await axios.post(`/api/event/addExpense/${eventId}`, expense);
+      await axios.post(`https://fuel-ed-noyz.vercel.app/api/event/addExpense/${eventId}`, expense);
       addExpense(expense);
       setTransactionTo("");
       setAmount("");
