@@ -28,7 +28,7 @@ const TableRegistry = ({ gifts }) => {
                 </a>
               </td>
               <td data-label="Status">{gift.status}</td>
-              <td data-label="Bought By">{gift.boughtBy.name}</td>
+              <td data-label="Bought By">{gift.boughtBy ? gift.boughtBy.name : 'none'}</td>
             </tr>
           ))}
         </tbody>
