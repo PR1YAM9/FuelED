@@ -6,14 +6,14 @@ The goal is to transform event planning into a seamless and enjoyable experience
 
 
 ## Features
-- Seating Plan Arragement: We allow users to create their own seating plan by adding guests to each table. Our unique preview option lets users view their seating arrangement, providing a better understanding and ensuring optimal organization.
+- Seating Plan Arrangement: We allow users to create their own seating plan by adding guests to each table. Our unique preview option lets users view their seating arrangement, providing a better understanding and ensuring optimal organization.
 
-- Chat and Annoucements : The chat feature facilitates direct, one-on-one communication between hosts and vendors, empowering both parties to engage seamlessly and efficiently. We've added an Announcements feature for hosts to easily share important messages with all guests.
+- Chat and Announcements: The chat feature facilitates direct, one-on-one communication between hosts and vendors, empowering both parties to engage seamlessly and efficiently. We've added an Announcement feature for hosts to share important messages with all guests easily.
 
-- Guests and Vendor Onboarding : We streamline vendor and guest onboarding by letting hosts add them to our database. We send invites through Gmail with unique login credentials. Once onboard, they get a role-specific dashboard view. Guests get an RSVP link to fill out necessary details. After confirming, they receive credentials to access features like announcements.
-- Budget Manager : We enable hosts to log both paid and pending expenses to track their budget. The calculator shows the remaining budget, aiding in future planning. This feature is invaluable for providing a clear financial overview, preventing overspending, and supporting better decision-making during event planning.
-- Gift Registry : The host can add their desired gifts which will be stored in the database. Guests can view and select a gift to give. Once a guest selects a gift, it will no longer be available for other guests to choose.
-- Calander : The Calendar feature enables hosts to conveniently add and store important dates and events in one centralized location, helping them stay organized and informed.
+- Guests and Vendor Onboarding: We streamline vendor and guest onboarding by letting hosts add them to our database. We send invites through Gmail with unique login credentials. Once onboard, they get a role-specific dashboard view. Guests get an RSVP link to fill out the necessary details. After confirming, they receive credentials to access features like announcements.
+- Budget Manager: We enable hosts to log paid and pending expenses to track their budget. The calculator shows the remaining budget, aiding in future planning. This feature provides a clear financial overview, prevents overspending, and supports better decision-making during event planning.
+- Gift Registry: The host can add their desired gifts which will be stored in the database. Guests can view and select a gift to give. Once a guest selects a gift, it will no longer be available for other guests to choose from.
+- Calander: The Calendar feature enables hosts to conveniently add and store important dates and events in one centralized location, helping them stay organized and informed.
 
 ## Screenshots
 
