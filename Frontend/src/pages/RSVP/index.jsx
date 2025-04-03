@@ -14,9 +14,9 @@ export default function RSVP() {
   const data = [
     {
       imgUrl: defaultPicture,
-      Heading: "Priyam Maini's Birthday Party",
+      Heading: "Invite to event kindly RSVP",
       SubHeading:
-        "To mark Priyam's 21st birthday, we are throwing a grand party and would love for you to join us in celebrating this special milestone. This event promises to be a delightful evening filled with laughter, joy, and cherished memories. We have planned an array of exciting activities, delectable food, and great music to make this night truly unforgettable. Your presence would add a touch of warmth and happiness to the celebration, making it even more special for Priyam",
+        "To mark special day, we are throwing a grand party and would love for you to join us in celebrating this special milestone. This event promises to be a delightful evening filled with laughter, joy, and cherished memories. We have planned an array of exciting activities, delectable food, and great music to make this night truly unforgettable. Your presence would add a touch of warmth and happiness to the celebration, making it even more special for us",
     },
   ];
 

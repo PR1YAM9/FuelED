@@ -20,7 +20,7 @@ const AddGifts = () => {
   const [open, setOpen] = useState(false);
   const [giftName, setGiftName] = useState("");
   const [giftLink, setGiftLink] = useState("");
-  const eventId = user.events[1]; // Hardcoded event ID for now
+  const eventId = user.events[0]; // Hardcoded event ID for now
 
   const handleOpen = () => {
     setOpen(true);
@@ -43,7 +43,7 @@ const AddGifts = () => {
         `https://fuel-ed-noyz.vercel.app/api/event/giftregister/${eventId}`,
         giftData
       );
-      // console.log("Gift registered successfully:", response.data);
+      console.log("Gift registered successfully:", response.data);
       setGiftName("");
       setGiftLink("");
       handleClose();
@@ -127,7 +127,6 @@ const AddGifts = () => {
             <Box mt={2}>
               <Button
                 type="submit"
-                onClick={handleClose}
                 variant="contained"
                 sx={{
                   backgroundColor: "#C3A8E1",

@@ -43,7 +43,7 @@ export default function SideBar() {
       case "BudgetManager":
         return "Budget Manager";
       case "SeatingPlan":
-        return "Seating Place";
+        return "Seating Plan";
       case "GiftRegistary":
         return "Gift Registry";
       case "Calender":

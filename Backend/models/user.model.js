@@ -35,6 +35,8 @@ const userSchema = new mongoose.Schema({
     }],
     uniqueId: {
         type: String,
+        unique: true,
+        sparse: true,
     },
     plusOne: String,
     numberOfChildren: Number,
@@ -92,7 +94,7 @@ const eventSchema = new mongoose.Schema({
             transactionTo: String,
             status: {
                 type: String,
-                enum: ['PENDING', 'PAID', 'DECLINED'],
+                enum: ['PENDING', 'PAID', 'DECLINED', 'APPROVED'], // Added 'APPROVED' here
                 default: 'PENDING'
             },
             date: String,

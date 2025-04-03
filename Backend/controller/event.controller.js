@@ -51,12 +51,9 @@ export const getEventDetails = async (req, res, next) => {
 
 export const createEvent = async (req, res, next) => {
     try {
-        const host= req.body.user;
+        const host = req.body.host;
         const { eventName, startDateTime, endDateTime, venue, description } = req.body;
 
-        if (!eventName || !startDateTime || !endDateTime || !venue) {
-            return res.status(400).json({ error: 'Incomplete event data' });
-        }
 
         const newEvent = new Event({
             eventName,
@@ -69,7 +66,18 @@ export const createEvent = async (req, res, next) => {
 
         await newEvent.save();
 
-        await User.findByIdAndUpdate(host, { $push: { events: newEvent._id } });
+        // Find the user by ID
+        const user = await User.findById(host);
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Push the event ID into the user's events array
+        user.events.push(newEvent._id);
+
+        // Save the user document
+        await user.save();
 
         res.status(200).json({ message: 'Event created successfully', event: newEvent });
     } catch (error) {
@@ -77,6 +85,7 @@ export const createEvent = async (req, res, next) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
 
 export const addGuests = async (req, res, next) => {
     try {
@@ -205,11 +214,7 @@ export const rsvpPost = async (req, res) => {
         guest.numberOfChildren = numberOfChildren;
         guest.dietaryRestrictions = dietaryRestrictions;
 
-        // Generate guestPass (only if the guest will attend)
-        if (willAttend === 'yes') {
-            const guestPass = guest.name.toLowerCase().split(' ').join('') + '123';
-            // Note: Ideally, passwords should be hashed before saving.
-        }
+        const guestPass = guest.name.toLowerCase().split(' ').join('') + '123';
 
         // Save the updated guest object
         await guest.save();
@@ -530,7 +535,7 @@ export const addExpense = async (req, res) => {
 
         const newExpense = {
             transactionTo,
-            status: status || 'PENDING',  // Default to 'PENDING' if status is not provided
+            status: status || 'PENDING',  
             date ,
             amount
         };

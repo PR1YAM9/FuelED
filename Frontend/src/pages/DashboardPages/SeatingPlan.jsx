@@ -77,7 +77,7 @@ export default function SeatingPlan() {
             fontFamily: "Inconsolata",
           }}
         >
-          Seating Pan
+          Seating Plan
         </Typography>
         <Box
           sx={{

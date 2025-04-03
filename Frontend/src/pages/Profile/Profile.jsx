@@ -14,8 +14,8 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { logoutCall } from "../../ApiCalls";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { logoutCall } from "../../ApiCalls";
 
 const Profile = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -27,6 +27,7 @@ const Profile = () => {
     logoutCall(dispatch);
     navigate("/login");
   };
+
   useEffect(() => {
     const getUser = async () => {
       try {
