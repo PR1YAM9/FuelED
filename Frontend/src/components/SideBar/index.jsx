@@ -50,6 +50,8 @@ export default function SideBar() {
         return "Calendar";
       case "announcements":
         return "Announcements";
+      case "ImageManipulation":
+        return "Image Manipulation";
       default:
         return "Dashboard";
     }
@@ -73,18 +75,41 @@ export default function SideBar() {
   };
 
   const listItems = [
-    { text: "Dashboard", link: "/dashboard", roles: ["HOST", "GUEST", "VENDOR"] },
+    {
+      text: "Dashboard",
+      link: "/dashboard",
+      roles: ["HOST", "GUEST", "VENDOR"],
+    },
+    {
+      text: "Image Manipulation",
+      link: "/dashboard/image-manipulation",
+      roles: ["HOST", "GUEST", "VENDOR"],
+    },
     { text: "Guest List", link: "/dashboard/GuestList", roles: ["HOST"] },
     { text: "Vendors List", link: "/dashboard/VendorsList", roles: ["HOST"] },
     { text: "Messenger", link: "/messenger", roles: ["HOST", "VENDOR"] },
-    { text: "Budget Manager", link: "/dashboard/BudgetManager", roles: ["HOST"] },
+    {
+      text: "Budget Manager",
+      link: "/dashboard/BudgetManager",
+      roles: ["HOST"],
+    },
     { text: "Seating Place", link: "/dashboard/SeatingPlan", roles: ["HOST"] },
-    { text: "Gift Registry", link: "/dashboard/GiftRegistary", roles: ["HOST", "GUEST"] },
+    {
+      text: "Gift Registry",
+      link: "/dashboard/GiftRegistary",
+      roles: ["HOST", "GUEST"],
+    },
     { text: "Calendar", link: "/dashboard/Calender", roles: ["HOST"] },
-    { text: "Announcements", link: "/dashboard/announcements", roles: ["HOST", "GUEST"] },
+    {
+      text: "Announcements",
+      link: "/dashboard/announcements",
+      roles: ["HOST", "GUEST"],
+    },
   ];
 
-  const filteredListItems = listItems.filter(item => item.roles.includes(user.role));
+  const filteredListItems = listItems.filter((item) =>
+    item.roles.includes(user.role)
+  );
 
   const list = (anchor) => (
     <Box
@@ -215,8 +240,8 @@ export default function SideBar() {
             onClick={toggleDrawer("left", true)}
             fontSize="large"
           />
-          <Link to={'/profile'}>
-          <AccountCircleIcon sx={{ color: "#E09BAC" }} fontSize="large" />
+          <Link to={"/profile"}>
+            <AccountCircleIcon sx={{ color: "#E09BAC" }} fontSize="large" />
           </Link>
         </Box>
 
