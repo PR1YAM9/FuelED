@@ -51,7 +51,7 @@ export default function SideBar() {
       case "announcements":
         return "Announcements";
       case "ImageManipulation":
-        return "Image Manipulation";
+        return "Venue Assist AI";
       default:
         return "Dashboard";
     }
