@@ -31,7 +31,7 @@ const PROMPT_SUGGESTIONS = [
 ];
 
 // Base URL for your backend API - update this to match your environment
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+const API_BASE_URL = "https://fuel-ed-noyz.vercel.app";
 
 export default function AiImageGeneration() {
   const [prompt, setPrompt] = useState("");
@@ -187,7 +187,7 @@ export default function AiImageGeneration() {
             fontFamily: "Inconsolata",
           }}
         >
-          AI Image Generation
+          Venue Assist AI
         </Typography>
 
         <Grid container spacing={3}>

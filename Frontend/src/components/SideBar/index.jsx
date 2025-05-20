@@ -81,7 +81,7 @@ export default function SideBar() {
       roles: ["HOST", "GUEST", "VENDOR"],
     },
     {
-      text: "Image Manipulation",
+      text: "Venue Assist AI",
       link: "/dashboard/image-manipulation",
       roles: ["HOST", "GUEST", "VENDOR"],
     },
