@@ -19,22 +19,19 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-// Sample prompt suggestions
+// Simplified event-related prompt suggestions
 const PROMPT_SUGGESTIONS = [
   "Wedding venue with flowers",
   "Birthday party with cake",
   "Business conference room",
   "Anniversary dinner setup",
-  "Outdoor music festival",
-  "Graduation ceremony",
-  "Baby shower decorations",
   "Christmas holiday party",
   "Beach party at sunset",
   "Children's birthday theme"
 ];
 
 // Base URL for your backend API - update this to match your environment
-const API_BASE_URL = "https://fuel-ed-noyz.vercel.app";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
 
 export default function AiImageGeneration() {
   const [prompt, setPrompt] = useState("");
@@ -73,21 +70,17 @@ export default function AiImageGeneration() {
 
       const data = await res.json();
       
-      // Handle the image URL - ensure it has the full API_BASE_URL prefix
-      // The backend returns /image/filename.png, so we need to prepend the base URL
-      const fullImageUrl = data.imageUrl.startsWith('http') 
-        ? data.imageUrl 
-        : `${API_BASE_URL}${data.imageUrl}`;
-        
-      setImageResult(fullImageUrl);
+      // The backend now returns a base64 data URL instead of a file path
+      // No need to modify the URL as it's already a complete data URL
+      setImageResult(data.imageUrl);
       
-      console.log("Image generated:", fullImageUrl); // Debug logging
+      console.log("Image generated successfully");
       
       // Add to history
       const newItem = {
         id: Date.now(),
         prompt,
-        imageUrl: fullImageUrl,
+        imageUrl: data.imageUrl,
         timestamp: new Date().toLocaleString(),
       };
       
@@ -98,6 +91,19 @@ export default function AiImageGeneration() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Function to download base64 image
+  const downloadImage = () => {
+    if (!imageResult) return;
+    
+    // Create a temporary link element
+    const link = document.createElement('a');
+    link.href = imageResult;
+    link.download = `ai-generated-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleCloseError = () => {
@@ -206,7 +212,7 @@ export default function AiImageGeneration() {
                 onChange={handlePromptChange}
                 multiline
                 rows={4}
-                placeholder="Example: A 3D rendered image of a futuristic city with flying cars and neon lights"
+                placeholder="Example: A wedding venue with beautiful flower arrangements and decorations"
                 sx={{ mb: 2 }}
               />
 
@@ -217,7 +223,7 @@ export default function AiImageGeneration() {
                 {PROMPT_SUGGESTIONS.map((suggestion, index) => (
                   <Chip
                     key={index}
-                    label={suggestion.slice(0, 20) + "..."}
+                    label={suggestion}
                     onClick={() => handleSuggestionClick(suggestion)}
                     sx={{
                       backgroundColor: '#f0e6f5',
@@ -297,13 +303,6 @@ export default function AiImageGeneration() {
                   </Box>
                 </Box>
                 
-                {/* Add debug info for development */}
-                {process.env.NODE_ENV === 'development' && (
-                  <Typography variant="caption" sx={{ display: 'block', mb: 1, color: 'gray' }}>
-                    Image URL: {imageResult}
-                  </Typography>
-                )}
-                
                 <Box
                   sx={{
                     position: 'relative',
@@ -328,18 +327,15 @@ export default function AiImageGeneration() {
                       borderRadius: "8px",
                     }}
                     onError={(e) => {
-                      console.error("Image failed to load:", imageResult);
+                      console.error("Image failed to load");
                       e.target.style.display = 'none';
-                      setError("Failed to load the generated image. The image path may be incorrect.");
+                      setError("Failed to load the generated image.");
                     }}
                   />
                 </Box>
                 
                 <Button
-                  component="a"
-                  href={imageResult}
-                  download
-                  target="_blank"
+                  onClick={downloadImage}
                   variant="contained"
                   startIcon={<FileDownloadIcon />}
                   sx={{
